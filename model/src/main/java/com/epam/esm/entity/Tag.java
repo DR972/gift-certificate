@@ -1,0 +1,27 @@
+package com.epam.esm.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Tag extends Entity<Long> {
+    public interface OnCreate {
+    }
+
+    @Size(groups = {Tag.OnCreate.class, GiftCertificate.OnCreate.class, GiftCertificate.OnUpdate.class}, min = 2, max = 30, message = "The Tag Name must contain from 2 to 30 characters")
+    @NotNull(groups = Tag.OnCreate.class, message = "The name field must not be null")
+    private String name;
+
+    public Tag(long id, String name) {
+        super(id);
+        this.name = name;
+    }
+}

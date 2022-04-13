@@ -1,0 +1,40 @@
+package com.epam.esm.dao.impl;
+
+import com.epam.esm.dao.ColumnName;
+import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.epam.esm.dao.ColumnName.*;
+
+@Repository
+public class GiftCertificateDaoImpl extends AbstractDao<GiftCertificate, Long> implements GiftCertificateDao {
+
+    public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate) {
+        super(jdbcTemplate);
+    }
+
+    @Override
+    public GiftCertificate buildEntity(ResultSet rs) throws SQLException {
+        List<Tag> tags = Arrays.stream((Object[]) rs.getArray(ColumnName.TAGS).getArray())
+                .map(t -> t.toString().replace("(", "").replace(")", "").replaceAll("\"", "").split(","))
+                .map(t -> new Tag(Long.parseLong(t[0]), t[1]))
+                .collect(Collectors.toList());
+        return new GiftCertificate(rs.getLong(ID),
+                rs.getString(NAME),
+                rs.getString(DESCRIPTION),
+                rs.getBigDecimal(PRICE),
+                rs.getInt(DURATION),
+                LocalDateTime.parse(rs.getString(CREATE_DATE).replaceAll(" ", "T")),
+                LocalDateTime.parse(rs.getString(LAST_UPDATE_DATE).replaceAll(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                tags);
+    }
+}

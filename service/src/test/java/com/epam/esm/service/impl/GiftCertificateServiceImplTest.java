@@ -1,0 +1,158 @@
+package com.epam.esm.service.impl;
+
+import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.GiftCertificateTagDao;
+import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Tag;
+import com.epam.esm.service.TagService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import java.math.BigDecimal;
+import java.time.*;
+import java.util.*;
+
+import static com.epam.esm.service.util.ColumnName.*;
+import static com.epam.esm.service.util.SqlQueryTest.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class GiftCertificateServiceImplTest {
+    private static final String TEXT = "text";
+    private static final String TAG = "tag";
+    private static final String SORTING = "sorting";
+
+    @Mock
+    private GiftCertificateDao certificateDao = mock(GiftCertificateDao.class);
+    @Mock
+    private TagService tagService = mock(TagService.class);
+    @Mock
+    private GiftCertificateTagDao certificateTagDao = mock(GiftCertificateTagDao.class);
+    @Mock
+    private Clock clock;
+    private Clock fixedClock;
+
+    @InjectMocks
+    private GiftCertificateServiceImpl certificateServiceImpl;
+
+    private static final GiftCertificate GIFT_CERTIFICATE_1 = new GiftCertificate(1, "ATV riding",
+            "Description ATV riding", new BigDecimal("100"), 10, LocalDateTime.parse("2022-04-01T10:12:45.123"),
+            LocalDateTime.parse("2022-04-07T14:15:13.257"), Arrays.asList(new Tag(1, "rest"), new Tag(2, "nature"), new Tag(4, "atv")));
+
+    private static final GiftCertificate GIFT_CERTIFICATE_2 = new GiftCertificate(2, "Horse riding",
+            "Horse riding description", new BigDecimal("80"), 8, LocalDateTime.parse("2022-04-02T10:12:45.123"),
+            LocalDateTime.parse("2022-04-05T14:15:13.257"), Arrays.asList(new Tag(1, "rest"), new Tag(2, "nature"), new Tag(5, "horse")));
+
+    private static final GiftCertificate GIFT_CERTIFICATE_3 = new GiftCertificate(3, "Visiting a restaurant",
+            "Visiting the Plaza restaurant", new BigDecimal("50"), 7, LocalDateTime.parse("2022-04-02T10:12:45.123"),
+            LocalDateTime.parse("2022-04-02T14:15:13.257"), Arrays.asList(new Tag(8, "food"), new Tag(10, "restaurant"), new Tag(12, "visit")));
+
+    private static final GiftCertificate GIFT_CERTIFICATE_4 = new GiftCertificate(4, "Visit to the drama theater",
+            "Description visit to the drama theater", new BigDecimal("45"), 2, LocalDateTime.parse("2022-03-30T10:12:45.123"),
+            LocalDateTime.parse("2022-04-08T14:15:13.257"), Arrays.asList(new Tag(6, "theater"), new Tag(12, "visit")));
+
+    private static final GiftCertificate GIFT_CERTIFICATE_5 = new GiftCertificate(5, "Shopping at the tool store",
+            "Description shopping at the tool store", new BigDecimal("30"), 10, LocalDateTime.parse("2022-03-25T10:12:45.123"),
+            LocalDateTime.parse("2022-04-01T14:15:13.257"), Arrays.asList(new Tag(3, "shopping"), new Tag(7, "tool")));
+
+    private static final GiftCertificate GIFT_CERTIFICATE_6 = new GiftCertificate(6, "Shopping at the supermarket",
+            "Shopping at Lidl supermarket chain", new BigDecimal("80"), 12, LocalDateTime.parse("2022-04-01T10:12:45.123"),
+            LocalDateTime.parse("2022-04-14T14:15:13.257"), Arrays.asList(new Tag(6, "shopping"), new Tag(8, "food"), new Tag(9, "supermarket")));
+
+    private static final GiftCertificate GIFT_CERTIFICATE_7 = new GiftCertificate(7, "Hot air balloon flight",
+            "An unforgettable hot air balloon flight", new BigDecimal("150"), 12, LocalDateTime.parse("2022-03-01T10:12:45.123"),
+            LocalDateTime.parse("2022-03-14T14:15:13.257"), Arrays.asList(new Tag(1, "rest"), new Tag(2, "nature"), new Tag(11, "flight")));
+
+    private static final GiftCertificate GIFT_CERTIFICATE_8 = new GiftCertificate("new GiftCertificate",
+            "new description", new BigDecimal("10"), 10, Arrays.asList(new Tag("rest"), new Tag("nature"), new Tag("new")));
+
+    private static final GiftCertificate GIFT_CERTIFICATE_9 = new GiftCertificate(5, null,
+            "Description shopping at the tool store", null, 10, null,
+            null, Arrays.asList(new Tag("shopping"), new Tag("tool"), new Tag("new")));
+
+    @Test
+    void findCertificate() {
+        certificateServiceImpl.findCertificate(2);
+        verify(certificateDao, times(1)).findEntity(FIND_CERTIFICATE_BY_ID, 2L);
+    }
+
+    @Test
+    void findListCertificates() {
+        findListCertificatesTest(Arrays.asList(null, null, Collections.singletonList(LAST_UPDATE_DATE + DESC)),
+                Arrays.asList(GIFT_CERTIFICATE_6, GIFT_CERTIFICATE_4, GIFT_CERTIFICATE_1, GIFT_CERTIFICATE_2, GIFT_CERTIFICATE_3, GIFT_CERTIFICATE_5, GIFT_CERTIFICATE_7),
+                FIND_ALL_CERTIFICATES_ORDER_BY_DATE_DESC, 5, 0, 5);
+
+        findListCertificatesTest(Arrays.asList(Collections.singletonList(VISIT), null, Collections.singletonList(LAST_UPDATE_DATE + DESC)),
+                Arrays.asList(GIFT_CERTIFICATE_4, GIFT_CERTIFICATE_3),
+                FIND_ALL_CERTIFICATES_BY_PART_NAME_OR_DESCRIPTION_ORDER_BY_DATE_DESC, VISIT, VISIT, 5, 0, 5);
+
+        findListCertificatesTest(Arrays.asList(null, Collections.singletonList(REST), Collections.singletonList(LAST_UPDATE_DATE + DESC)),
+                Arrays.asList(GIFT_CERTIFICATE_1, GIFT_CERTIFICATE_2, GIFT_CERTIFICATE_7),
+                FIND_ALL_CERTIFICATES_WITH_SPECIFIC_TAG_ORDER_BY_DATE_DESC, REST, 5, 0, 5);
+
+        findListCertificatesTest(Arrays.asList(Collections.singletonList(RIDING), Collections.singletonList(REST),
+                        Arrays.asList(LAST_UPDATE_DATE + DESC, NAME)),
+                Arrays.asList(GIFT_CERTIFICATE_1, GIFT_CERTIFICATE_2),
+                FIND_ALL_CERTIFICATES_BY_PART_NAME_OR_DESCRIPTION_WITH_SPECIFIC_TAG_ORDER_BY_DATE_AND_NAME,
+                RIDING, RIDING, REST, 5, 0, 5);
+    }
+
+    private void findListCertificatesTest(List<List<String>> list, List<GiftCertificate> certificates, String query, Object... queryParams) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.put(TEXT, list.get(0));
+        params.put(TAG, list.get(1));
+        params.put(SORTING, list.get(2));
+        when(certificateDao.findListEntities(query, queryParams)).thenReturn(certificates);
+        assertEquals(certificates, certificateServiceImpl.findListCertificates(params, 5, 0, 5));
+    }
+
+    @Test
+    void createCertificate() {
+        fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        certificateServiceImpl.createCertificate(GIFT_CERTIFICATE_8);
+
+        verify(certificateDao, times(1)).createEntity(CREATE_CERTIFICATE,
+                GIFT_CERTIFICATE_8.getName(),
+                GIFT_CERTIFICATE_8.getDescription(),
+                GIFT_CERTIFICATE_8.getPrice(),
+                GIFT_CERTIFICATE_8.getDuration(),
+                LocalDateTime.now(fixedClock),
+                LocalDateTime.now(fixedClock));
+
+        verify(tagService, times(1)).createTag(new Tag(NEW));
+        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 0L, REST);
+        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 0L, NATURE);
+        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 0L, NEW);
+    }
+
+    @Test
+    void updateCertificate() {
+        fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
+        doReturn(fixedClock.instant()).when(clock).instant();
+        doReturn(fixedClock.getZone()).when(clock).getZone();
+        certificateServiceImpl.updateCertificate(GIFT_CERTIFICATE_9, 5);
+
+        verify(certificateDao, times(1)).updateEntity(UPDATE_CERTIFICATE_FIELDS_DESCRIPTION_DURATION,
+                GIFT_CERTIFICATE_9.getDescription(), GIFT_CERTIFICATE_9.getDuration(), LocalDateTime.now(fixedClock), 5L);
+        verify(tagService, times(1)).createTag(new Tag(NEW));
+
+        verify(certificateTagDao, times(1)).updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, 5L);
+        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 5L, SHOPPING);
+        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 5L, TOOL);
+        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 5L, NEW);
+    }
+
+    @Test
+    void deleteCertificate() {
+        certificateServiceImpl.deleteCertificate(3);
+        verify(certificateTagDao, times(1)).updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, 3L);
+        verify(certificateDao, times(1)).updateEntity(DELETE_CERTIFICATE, 3L);
+    }
+}
