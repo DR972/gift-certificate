@@ -6,6 +6,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import static com.epam.esm.dao.ColumnName.GIFT_CERTIFICATE_ID;
+import static com.epam.esm.dao.ColumnName.TAG_ID;
 
 @Repository
 public class GiftCertificateTagDaoImpl extends AbstractDao<GiftCertificateTag, Long> implements GiftCertificateTagDao {
@@ -15,7 +19,8 @@ public class GiftCertificateTagDaoImpl extends AbstractDao<GiftCertificateTag, L
     }
 
     @Override
-    public GiftCertificateTag buildEntity(ResultSet rs) {
-        return null;
+    public GiftCertificateTag buildEntity(ResultSet rs) throws SQLException {
+        return new GiftCertificateTag(rs.getLong(GIFT_CERTIFICATE_ID),
+                rs.getLong(TAG_ID));
     }
 }
