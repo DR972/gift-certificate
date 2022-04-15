@@ -23,7 +23,7 @@ public final class SqlQueryTest {
                     "LEFT JOIN gift_certificate_tag ON gift_certificate_id = gift_certificate.id " +
                     "LEFT JOIN tag ON tag.id = tag_id  " +
                     "WHERE (gift_certificate.name ILIKE '%' || ? || '%' or gift_certificate.description ILIKE '%' || ? || '%') " +
-                    "GROUP BY gift_certificate.id ORDER BY last_update_date DESC offset (? * ?) ROWS fetch next ? ROWS only";
+                    " GROUP BY gift_certificate.id ORDER BY last_update_date DESC offset (? * ?) ROWS fetch next ? ROWS only";
 
     public static final String FIND_ALL_CERTIFICATES_WITH_SPECIFIC_TAG_ORDER_BY_DATE_DESC =
             "SELECT gift_certificate.id, gift_certificate.name, description, price, duration, create_date, last_update_date, " +
@@ -32,7 +32,7 @@ public final class SqlQueryTest {
                     "LEFT JOIN tag ON tag.id = tag_id  " +
                     "WHERE (gift_certificate.id IN (SELECT gift_certificate_id FROM gift_certificate_tag " +
                     "WHERE tag_id = (SELECT id FROM tag WHERE name=?))) " +
-                    "GROUP BY gift_certificate.id ORDER BY last_update_date DESC offset (? * ?) ROWS fetch next ? ROWS only";
+                    " GROUP BY gift_certificate.id ORDER BY last_update_date DESC offset (? * ?) ROWS fetch next ? ROWS only";
 
     public static final String FIND_ALL_CERTIFICATES_BY_PART_NAME_OR_DESCRIPTION_WITH_SPECIFIC_TAG_ORDER_BY_DATE_AND_NAME =
             "SELECT gift_certificate.id, gift_certificate.name, description, price, duration, create_date, last_update_date, " +
@@ -41,8 +41,8 @@ public final class SqlQueryTest {
                     "LEFT JOIN tag ON tag.id = tag_id  " +
                     "WHERE (gift_certificate.name ILIKE '%' || ? || '%' or gift_certificate.description ILIKE '%' || ? || '%') " +
                     "AND  (gift_certificate.id IN (SELECT gift_certificate_id FROM gift_certificate_tag " +
-                    "WHERE tag_id = (SELECT id FROM tag WHERE name=?))) GROUP BY gift_certificate.id " +
-                    "ORDER BY last_update_date DESC,gift_certificate.name offset (? * ?) ROWS fetch next ? ROWS only";
+                    "WHERE tag_id = (SELECT id FROM tag WHERE name=?)))  GROUP BY gift_certificate.id " +
+                    "ORDER BY last_update_date DESC, gift_certificate.name offset (? * ?) ROWS fetch next ? ROWS only";
 
     public static final String CREATE_CERTIFICATE =
             "INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date) VALUES(?, ?, ?, ?, ?, ?)";

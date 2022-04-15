@@ -18,10 +18,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static com.epam.esm.dao.util.SqlQueryTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DataBaseConfigTest.class)
@@ -63,8 +63,8 @@ public class TagDaoImplTest {
 
     @Test
     void findEntity() {
-        assertEquals(tagDao.findEntity(FIND_TAG_BY_ID, TAG_1.getId()), TAG_1);
-        assertEquals(tagDao.findEntity(FIND_TAG_BY_NAME, TAG_2.getName()), TAG_2);
+        assertEquals(tagDao.findEntity(FIND_TAG_BY_ID, TAG_1.getId()), Optional.of(TAG_1));
+        assertEquals(tagDao.findEntity(FIND_TAG_BY_NAME, TAG_2.getName()), Optional.of(TAG_2));
     }
 
     @Test
@@ -86,11 +86,11 @@ public class TagDaoImplTest {
     @Test
     void updateEntity() {
         tagDao.updateEntity(UPDATE_TAG, NEW, 5);
-        assertEquals(tagDao.findEntity(FIND_TAG_BY_ID, 5), new Tag(5,NEW));
+        assertEquals(tagDao.findEntity(FIND_TAG_BY_ID, 5), Optional.of(new Tag(5, NEW)));
 
         certificateTagDao.updateEntity(DELETE_CERTIFICATE_TAG_BY_TAG_ID, 1);
         tagDao.updateEntity(DELETE_TAG, 1);
-        assertNull(tagDao.findEntity(FIND_TAG_BY_ID, 1));
+        assertEquals(tagDao.findEntity(FIND_TAG_BY_ID, 1), Optional.empty());
     }
 
 }

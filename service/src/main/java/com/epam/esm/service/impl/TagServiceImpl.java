@@ -32,7 +32,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag findTagByName(String name) {
-        return tagDao.findEntity(FIND_TAG_BY_NAME, name).orElseThrow(() -> new DuplicateEntityException("There is no tag with this name = " + name));
+        return tagDao.findEntity(FIND_TAG_BY_NAME, name).orElse(new Tag());
     }
 
     @Override
@@ -42,14 +42,18 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag createTag(Tag tag) {
-        findTagByName(tag.getName());
+        if (findTagByName(tag.getName()).getName() != null) {
+            throw new DuplicateEntityException("A tag named '" + tag.getName() + "' already exists");
+        }
         long key = tagDao.createEntity(CREATE_TAG, tag.getName());
         return findTagById(key);
     }
 
     @Override
     public Tag updateTag(Tag tag, long id) {
-        findTagByName(tag.getName());
+        if (findTagByName(tag.getName()).getName() != null) {
+            throw new DuplicateEntityException("A tag named '" + tag.getName() + "' already exists");
+        }
         findTagById(id);
         tagDao.updateEntity(UPDATE_TAG, tag.getName(), id);
         return findTagById(id);

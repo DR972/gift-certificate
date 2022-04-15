@@ -26,7 +26,6 @@ public class CertificateController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificate getCertificateById(@PathVariable long id) {
-        GiftCertificate certificate = certificateService.findCertificate(id);
         return certificateService.findCertificate(id);
     }
 

@@ -22,10 +22,10 @@ import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static com.epam.esm.dao.util.SqlQueryTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = DataBaseConfigTest.class)
@@ -94,7 +94,7 @@ public class GiftCertificateDaoImplTest {
 
     @Test
     void findEntity() {
-        assertEquals(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 2L), GIFT_CERTIFICATE_2);
+        assertEquals(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 2L), Optional.of(GIFT_CERTIFICATE_2));
     }
 
     @Test
@@ -145,31 +145,31 @@ public class GiftCertificateDaoImplTest {
         long tagId = tagDao.createEntity(CREATE_TAG, NEW);
         certificateTagDao.updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_ID, UPDATE_GIFT_CERTIFICATE_1.getId(), tagId);
         assertEquals(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, UPDATE_GIFT_CERTIFICATE_1.getId()),
-                new GiftCertificate(UPDATE_GIFT_CERTIFICATE_1.getId(),
+                Optional.of(new GiftCertificate(UPDATE_GIFT_CERTIFICATE_1.getId(),
                         UPDATE_GIFT_CERTIFICATE_1.getName(),
                         UPDATE_GIFT_CERTIFICATE_1.getDescription(),
                         UPDATE_GIFT_CERTIFICATE_1.getPrice(),
                         UPDATE_GIFT_CERTIFICATE_1.getDuration(),
                         GIFT_CERTIFICATE_5.getCreateDate(),
                         dateTime,
-                        UPDATE_GIFT_CERTIFICATE_1.getTags()));
+                        UPDATE_GIFT_CERTIFICATE_1.getTags())));
 
         certificateDao.updateEntity(UPDATE_CERTIFICATE_NAME_PRICE,
                 UPDATE_GIFT_CERTIFICATE_2.getName(),
                 UPDATE_GIFT_CERTIFICATE_2.getPrice(),
                 dateTime, 6);
         assertEquals(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, UPDATE_GIFT_CERTIFICATE_2.getId()),
-                new GiftCertificate(UPDATE_GIFT_CERTIFICATE_2.getId(),
+                Optional.of(new GiftCertificate(UPDATE_GIFT_CERTIFICATE_2.getId(),
                         UPDATE_GIFT_CERTIFICATE_2.getName(),
                         GIFT_CERTIFICATE_6.getDescription(),
                         UPDATE_GIFT_CERTIFICATE_2.getPrice(),
                         GIFT_CERTIFICATE_6.getDuration(),
                         GIFT_CERTIFICATE_6.getCreateDate(),
                         dateTime,
-                        UPDATE_GIFT_CERTIFICATE_2.getTags()));
+                        UPDATE_GIFT_CERTIFICATE_2.getTags())));
 
         certificateTagDao.updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, 1);
         certificateDao.updateEntity(DELETE_CERTIFICATE, 1);
-        assertNull(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 1));
+        assertEquals(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 1), Optional.empty());
     }
 }

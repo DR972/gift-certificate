@@ -18,7 +18,6 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.epam.esm.util.SqlQuery.*;
 
@@ -53,30 +52,25 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public List<GiftCertificate> findListCertificates(MultiValueMap<String, String> params, Object... pageParams) {
         StringBuilder query = new StringBuilder(FIND_ALL_CERTIFICATES);
-
         List<Object> queryParams = new LinkedList<>();
-        if (params.get(TEXT) != null && params.get(TAG) != null) {
-            query.append(WHERE).append(SEARCH_BY_TEXT).append(AND).append(SEARCH_BY_TAG);
-            queryParams.add(params.get(TEXT).get(0));
-            queryParams.add(params.get(TEXT).get(0));
-            queryParams.add(params.get(TAG).get(0));
-        } else {
-            if (params.get(TEXT) != null) {
-                query.append(WHERE).append(SEARCH_BY_TEXT);
-                queryParams.add(params.get(TEXT).get(0));
-                queryParams.add(params.get(TEXT).get(0));
-            }
-            if (params.get(TAG) != null) {
-                query.append(WHERE).append(SEARCH_BY_TAG);
-                queryParams.add(params.get(TAG).get(0));
-            }
+        if (params.get(TEXT) != null || params.get(TAG) != null) {
+            query.append(params.keySet().stream()
+                    .filter(k -> k.equals(TEXT) || k.equals(TAG))
+                    .map(key -> {
+                        if (key.equals(TEXT)) return SEARCH_BY_TEXT;
+                        else return SEARCH_BY_TAG;
+                    })
+                    .collect(Collectors.joining(AND, WHERE, " ")));
         }
+        queryParams.addAll(createQueryParamsList(params.get(TEXT)));
+        queryParams.addAll(createQueryParamsList(params.get(TEXT)));
+        queryParams.addAll(createQueryParamsList(params.get(TAG)));
+
         query.append(GROUP_BY_CERTIFICATE);
         if (params.get(SORTING) != null) {
-            query.append(ORDER_BY);
-            IntStream.range(0, params.get(SORTING).size()).forEach(i -> query.append(params.get(SORTING).get(i)).append(","));
-            query.deleteCharAt(query.length() - 1);
+            query.append(params.get(SORTING).stream().collect(Collectors.joining(", ", ORDER_BY, "")));
         }
+
         query.append(OFFSET);
         queryParams.addAll(Arrays.asList(pageParams));
         return certificateDao.findListEntities(query.toString(), queryParams.toArray());
@@ -135,5 +129,9 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         findCertificate(id);
         certificateTagDao.updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, id);
         certificateDao.updateEntity(DELETE_CERTIFICATE, id);
+    }
+
+    private List<String> createQueryParamsList(List<String> params) {
+        return params == null ? new ArrayList<>() : params;
     }
 }

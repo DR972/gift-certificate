@@ -25,8 +25,7 @@ public abstract class AbstractDao<T extends Entity<ID>, ID> implements Dao<T, ID
 
     @Override
     public Optional<T> findEntity(String query, Object... params) {
-        return jdbcTemplate.query(query, (rs, rowNum) -> buildEntity(rs), params)
-                .stream().findAny();
+        return jdbcTemplate.query(query, (rs, rowNum) -> buildEntity(rs), params).stream().findAny();
     }
 
     @Override
@@ -44,7 +43,6 @@ public abstract class AbstractDao<T extends Entity<ID>, ID> implements Dao<T, ID
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(query, new String[]{ColumnName.ID});
-//            IntStream.range(1, params.length).forEach(i-> preparedStatement.setObject(i, params[i-1]));
             for (int i = 0; i < params.length; i++) {
                 preparedStatement.setObject(i + 1, params[i]);
             }

@@ -77,6 +77,7 @@ class GiftCertificateServiceImplTest {
 
     @Test
     void findCertificate() {
+        when(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 2L)).thenReturn(Optional.of(GIFT_CERTIFICATE_2));
         certificateServiceImpl.findCertificate(2);
         verify(certificateDao, times(1)).findEntity(FIND_CERTIFICATE_BY_ID, 2L);
     }
@@ -104,9 +105,9 @@ class GiftCertificateServiceImplTest {
 
     private void findListCertificatesTest(List<List<String>> list, List<GiftCertificate> certificates, String query, Object... queryParams) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.put(TEXT, list.get(0));
-        params.put(TAG, list.get(1));
-        params.put(SORTING, list.get(2));
+        if (list.get(0) != null) params.put(TEXT, list.get(0));
+        if (list.get(1) != null) params.put(TAG, list.get(1));
+        if (list.get(2) != null) params.put(SORTING, list.get(2));
         when(certificateDao.findListEntities(query, queryParams)).thenReturn(certificates);
         assertEquals(certificates, certificateServiceImpl.findListCertificates(params, 5, 0, 5));
     }
@@ -116,6 +117,7 @@ class GiftCertificateServiceImplTest {
         fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 0L)).thenReturn(Optional.of(GIFT_CERTIFICATE_8));
         certificateServiceImpl.createCertificate(GIFT_CERTIFICATE_8);
 
         verify(certificateDao, times(1)).createEntity(CREATE_CERTIFICATE,
@@ -137,6 +139,7 @@ class GiftCertificateServiceImplTest {
         fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
         doReturn(fixedClock.instant()).when(clock).instant();
         doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 5L)).thenReturn(Optional.of(GIFT_CERTIFICATE_9));
         certificateServiceImpl.updateCertificate(GIFT_CERTIFICATE_9, 5);
 
         verify(certificateDao, times(1)).updateEntity(UPDATE_CERTIFICATE_FIELDS_DESCRIPTION_DURATION,
@@ -151,6 +154,7 @@ class GiftCertificateServiceImplTest {
 
     @Test
     void deleteCertificate() {
+        when(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 3L)).thenReturn(Optional.of(GIFT_CERTIFICATE_3));
         certificateServiceImpl.deleteCertificate(3);
         verify(certificateTagDao, times(1)).updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, 3L);
         verify(certificateDao, times(1)).updateEntity(DELETE_CERTIFICATE, 3L);
