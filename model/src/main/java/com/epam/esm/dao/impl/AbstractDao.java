@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 public abstract class AbstractDao<T extends Entity<ID>, ID> implements Dao<T, ID> {
@@ -23,9 +24,9 @@ public abstract class AbstractDao<T extends Entity<ID>, ID> implements Dao<T, ID
     }
 
     @Override
-    public T findEntity(String query, Object... params) {
+    public Optional<T> findEntity(String query, Object... params) {
         return jdbcTemplate.query(query, (rs, rowNum) -> buildEntity(rs), params)
-                .stream().findAny().orElse(null);
+                .stream().findAny();
     }
 
     @Override

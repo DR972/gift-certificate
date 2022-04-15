@@ -6,6 +6,7 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.exception.NoSuchEntityException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public GiftCertificate findCertificate(long id) {
-        return certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, id);
+        return certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, id).orElseThrow(
+                () -> new NoSuchEntityException("There is no Gift Certificate with this ID = " + id));
     }
 
     @Override
@@ -103,6 +105,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public GiftCertificate updateCertificate(GiftCertificate certificate, long id) {
+        findCertificate(id);
         List<Object> params = new LinkedList<>();
         StringBuilder query = new StringBuilder(UPDATE_CERTIFICATE);
         for (Field field : certificate.getClass().getDeclaredFields()) {
@@ -129,6 +132,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteCertificate(long id) {
+        findCertificate(id);
         certificateTagDao.updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, id);
         certificateDao.updateEntity(DELETE_CERTIFICATE, id);
     }

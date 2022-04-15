@@ -1,5 +1,7 @@
 package com.epam.esm.exception;
 
+import com.epam.esm.service.exception.DuplicateEntityException;
+import com.epam.esm.service.exception.NoSuchEntityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;

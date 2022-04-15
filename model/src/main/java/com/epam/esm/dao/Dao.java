@@ -2,10 +2,11 @@ package com.epam.esm.dao;
 
 import com.epam.esm.entity.Entity;
 import java.util.List;
+import java.util.Optional;
 
 public interface Dao<T extends Entity<ID>, ID> {
 
-    T findEntity(String query, Object... params);
+    Optional<T> findEntity(String query, Object... params);
 
     List<T> findListEntities(String query, Object... params);
 
