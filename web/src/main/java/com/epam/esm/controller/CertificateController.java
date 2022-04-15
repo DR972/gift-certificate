@@ -37,7 +37,7 @@ public class CertificateController {
         return certificateService.findListCertificates(allRequestParams, rows, pageNumber, rows);
     }
 
-    @PostMapping("/createCertificate")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificate createCertificate(@Validated(GiftCertificate.OnCreate.class) @RequestBody GiftCertificate certificate) {
         return certificateService.createCertificate(certificate);
@@ -46,7 +46,7 @@ public class CertificateController {
     @PatchMapping("/updateCertificate/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificate updateCertificate(@Validated(GiftCertificate.OnUpdate.class) @RequestBody GiftCertificate certificate,
-                                                             @PathVariable long id) {
+                                             @PathVariable long id) {
         return certificateService.updateCertificate(certificate, id);
     }
 
