@@ -1,9 +1,6 @@
 package com.epam.esm.service.util;
 
 public final class SqlQueryTest {
-    private SqlQueryTest() {
-    }
-
     /* Query to the GiftCertificate table */
     public static final String FIND_CERTIFICATE_BY_ID =
             "SELECT gift_certificate.id, gift_certificate.name, description, price, duration, create_date, last_update_date, " +
@@ -70,4 +67,7 @@ public final class SqlQueryTest {
     public static final String SHOPPING = "shopping";
     public static final String TOOL = "tool";
     public static final String NEW = "new";
+
+    private SqlQueryTest() {
+    }
 }

@@ -1,10 +1,6 @@
 package com.epam.esm.dao.util;
 
 public final class SqlQueryTest {
-
-    private SqlQueryTest() {
-    }
-
     /* Query to the GiftCertificate table */
     public static final String FIND_CERTIFICATE_BY_ID =
             "SELECT gift_certificate.id, gift_certificate.name, description, price, duration, create_date, last_update_date, " +
@@ -70,4 +66,7 @@ public final class SqlQueryTest {
     public static final String NATURE = "nature";
     public static final String SCRIPT = "script";
     public static final String NEW = "new";
+
+    private SqlQueryTest() {
+    }
 }
