@@ -34,25 +34,25 @@ public class TagController {
     }
 
 
-    @GetMapping("/allTags")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Tag> getTagList() {
         return tagService.findAllTags();
     }
 
-    @PostMapping("/createTag")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Tag createTag(@Validated(Tag.OnCreate.class) @RequestBody Tag tag) {
         return tagService.createTag(tag);
     }
 
-    @PatchMapping("/updateTag/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Tag updateTag(@PathVariable long id, @Validated(Tag.OnCreate.class) @RequestBody Tag tag) {
         return tagService.updateTag(tag, id);
     }
 
-    @DeleteMapping("/deleteTag/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable long id) {
         tagService.deleteTag(id);

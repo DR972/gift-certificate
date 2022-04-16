@@ -38,7 +38,7 @@ public class CertificateController {
         return certificateService.findCertificate(id);
     }
 
-    @GetMapping("/allCertificates")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GiftCertificate> getAllCertificates(@RequestParam MultiValueMap<String, String> allRequestParams,
                                                     @RequestParam(name = ROWS, defaultValue = "5") int rows,
@@ -46,13 +46,13 @@ public class CertificateController {
         return certificateService.findListCertificates(allRequestParams, rows, pageNumber, rows);
     }
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificate createCertificate(@Validated(GiftCertificate.OnCreate.class) @RequestBody GiftCertificate certificate) {
         return certificateService.createCertificate(certificate);
     }
 
-    @PatchMapping("/updateCertificate/{id}")
+    @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificate updateCertificate(@Validated(GiftCertificate.OnUpdate.class) @RequestBody GiftCertificate certificate,
                                              @PathVariable long id) {
