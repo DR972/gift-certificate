@@ -2,9 +2,6 @@ package com.epam.esm.util;
 
 public final class SqlQuery {
 
-    private SqlQuery() {
-    }
-
     /* Query to the GiftCertificate table */
     public static final String FIND_CERTIFICATE_BY_ID =
             "SELECT gift_certificate.id, gift_certificate.name, description, price, duration, create_date, last_update_date, " +
@@ -25,12 +22,16 @@ public final class SqlQuery {
     public static final String FIND_ALL_TAGS = "SELECT id, name FROM tag ORDER BY id";
     public static final String FIND_TAG_BY_ID = "SELECT id, name FROM tag WHERE id=?";
     public static final String FIND_TAG_BY_NAME = "SELECT id, name FROM tag WHERE name=?";
+    public static final String FIND_ID_TAG = "(SELECT id FROM tag WHERE name=?)";
     public static final String CREATE_TAG = "INSERT INTO tag (name) VALUES(?)";
+    public static final String CREATE_A_LOT_TAGS_PART_1 = "INSERT INTO tag (name) (SELECT t FROM unnest(ARRAY[";
+    public static final String CREATE_A_LOT_TAGS_PART_2 = "]) t where t.name not in (select name from tag))";
     public static final String UPDATE_TAG = "UPDATE tag SET name=? WHERE id=?";
     public static final String DELETE_TAG = "DELETE FROM tag WHERE id=?";
 
     /* Query to the GiftCertificateTag table */
-    public static final String CREATE_CERTIFICATE_TAG_BY_TAG_NAME = "INSERT INTO gift_certificate_tag VALUES(?, (SELECT tag.id FROM tag WHERE name=?))";
+    public static final String CREATE_A_LOT_CERTIFICATE_TAGS_PART_1 = "INSERT INTO gift_certificate_tag VALUES(?, unnest(ARRAY[";
+    public static final String CREATE_A_LOT_CERTIFICATE_TAGS_PART_2 = "]))";
     public static final String DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID = "DELETE FROM gift_certificate_tag WHERE gift_certificate_id=?";
     public static final String DELETE_CERTIFICATE_TAG_BY_TAG_ID = "DELETE FROM gift_certificate_tag WHERE tag_id=?";
 
@@ -44,4 +45,6 @@ public final class SqlQuery {
     public static final String SUFFIX = "=?,";
     public static final String OFFSET = " offset (? * ?) ROWS fetch next ? ROWS only";
 
+    private SqlQuery() {
+    }
 }

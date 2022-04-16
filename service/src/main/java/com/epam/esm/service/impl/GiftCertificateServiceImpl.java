@@ -2,10 +2,10 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.GiftCertificateTagDao;
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.GiftCertificateService;
-import com.epam.esm.service.TagService;
 import com.epam.esm.service.exception.NoSuchEntityException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.epam.esm.util.SqlQuery.*;
 
@@ -32,14 +34,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateDao certificateDao;
     private final GiftCertificateTagDao certificateTagDao;
-    private final TagService tagService;
+    private final TagDao tagDao;
     private final Clock clock;
 
     @Autowired
-    public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, GiftCertificateTagDao certificateTagDao, TagService tagService, Clock clock) {
+    public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, GiftCertificateTagDao certificateTagDao, TagDao tagDao, Clock clock) {
         this.certificateDao = certificateDao;
         this.certificateTagDao = certificateTagDao;
-        this.tagService = tagService;
+        this.tagDao = tagDao;
         this.clock = clock;
     }
 
@@ -54,13 +56,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         StringBuilder query = new StringBuilder(FIND_ALL_CERTIFICATES);
         List<Object> queryParams = new LinkedList<>();
         if (params.get(TEXT) != null || params.get(TAG) != null) {
-            query.append(params.keySet().stream()
-                    .filter(k -> k.equals(TEXT) || k.equals(TAG))
+            query.append(params.keySet().stream().filter(k -> k.equals(TEXT) || k.equals(TAG))
                     .map(key -> {
                         if (key.equals(TEXT)) return SEARCH_BY_TEXT;
                         else return SEARCH_BY_TAG;
-                    })
-                    .collect(Collectors.joining(AND, WHERE, " ")));
+                    }).collect(Collectors.joining(AND, WHERE, " ")));
         }
         queryParams.addAll(createQueryParamsList(params.get(TEXT)));
         queryParams.addAll(createQueryParamsList(params.get(TEXT)));
@@ -89,9 +89,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                 dateTime,
                 dateTime);
 
-        List<String> allTags = tagService.findAllTags().stream().map(Tag::getName).collect(Collectors.toList());
-        certificate.getTags().stream().filter(tag -> !allTags.contains(tag.getName())).forEachOrdered(tagService::createTag);
-        certificate.getTags().forEach(t -> certificateTagDao.updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, key, t.getName()));
+        Object[] tags = certificate.getTags().stream().map(Tag::getName).distinct().toArray(Object[]::new);
+        tagDao.updateEntity(CREATE_A_LOT_TAGS_PART_1 + createQueryParams("?", tags.length) + CREATE_A_LOT_TAGS_PART_2, tags);
+        certificateTagDao.updateEntity(CREATE_A_LOT_CERTIFICATE_TAGS_PART_1 + createQueryParams(FIND_ID_TAG, tags.length) + CREATE_A_LOT_CERTIFICATE_TAGS_PART_2,
+                Stream.concat(Arrays.stream(new Object[]{key}), Arrays.stream(tags)).toArray(Object[]::new));
         return findCertificate(key);
     }
 
@@ -114,11 +115,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         params.add(LocalDateTime.now(clock));
         params.add(id);
         certificateDao.updateEntity(query.toString(), params.toArray());
-        List<String> allTags = tagService.findAllTags().stream().map(Tag::getName).collect(Collectors.toList());
-        certificate.getTags().stream().filter(tag -> !allTags.contains(tag.getName())).forEachOrdered(tagService::createTag);
 
+        Object[] tags = certificate.getTags().stream().map(Tag::getName).distinct().toArray(Object[]::new);
+        tagDao.updateEntity(CREATE_A_LOT_TAGS_PART_1 + createQueryParams("?", tags.length) + CREATE_A_LOT_TAGS_PART_2, tags);
         certificateTagDao.updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, id);
-        certificate.getTags().forEach(t -> certificateTagDao.updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, id, t.getName()));
+        certificateTagDao.updateEntity(CREATE_A_LOT_CERTIFICATE_TAGS_PART_1 + createQueryParams(FIND_ID_TAG, tags.length) + CREATE_A_LOT_CERTIFICATE_TAGS_PART_2,
+                Stream.concat(Arrays.stream(new Object[]{id}), Arrays.stream(tags)).toArray(Object[]::new));
 
         return findCertificate(id);
     }
@@ -129,6 +131,10 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         findCertificate(id);
         certificateTagDao.updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, id);
         certificateDao.updateEntity(DELETE_CERTIFICATE, id);
+    }
+
+    private String createQueryParams(String str, int length) {
+        return IntStream.range(0, length).mapToObj(i -> str).collect(Collectors.joining(", "));
     }
 
     private List<String> createQueryParamsList(List<String> params) {

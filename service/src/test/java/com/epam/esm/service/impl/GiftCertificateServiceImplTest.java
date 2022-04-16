@@ -2,6 +2,7 @@ package com.epam.esm.service.impl;
 
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.GiftCertificateTagDao;
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
@@ -29,6 +30,8 @@ class GiftCertificateServiceImplTest {
 
     @Mock
     private GiftCertificateDao certificateDao = mock(GiftCertificateDao.class);
+    @Mock
+    private TagDao tagDao = mock(TagDao.class);
     @Mock
     private TagService tagService = mock(TagService.class);
     @Mock
@@ -128,10 +131,8 @@ class GiftCertificateServiceImplTest {
                 LocalDateTime.now(fixedClock),
                 LocalDateTime.now(fixedClock));
 
-        verify(tagService, times(1)).createTag(new Tag(NEW));
-        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 0L, REST);
-        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 0L, NATURE);
-        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 0L, NEW);
+        verify(tagDao, times(1)).updateEntity(anyString(), any());
+        verify(certificateTagDao, times(1)).updateEntity(anyString(), any());
     }
 
     @Test
@@ -144,12 +145,9 @@ class GiftCertificateServiceImplTest {
 
         verify(certificateDao, times(1)).updateEntity(UPDATE_CERTIFICATE_FIELDS_DESCRIPTION_DURATION,
                 GIFT_CERTIFICATE_9.getDescription(), GIFT_CERTIFICATE_9.getDuration(), LocalDateTime.now(fixedClock), 5L);
-        verify(tagService, times(1)).createTag(new Tag(NEW));
 
-        verify(certificateTagDao, times(1)).updateEntity(DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID, 5L);
-        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 5L, SHOPPING);
-        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 5L, TOOL);
-        verify(certificateTagDao, times(1)).updateEntity(CREATE_CERTIFICATE_TAG_BY_TAG_NAME, 5L, NEW);
+        verify(tagDao, times(1)).updateEntity(anyString(), any());
+        verify(certificateTagDao, times(2)).updateEntity(anyString(), any());
     }
 
     @Test
