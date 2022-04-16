@@ -5,7 +5,7 @@ import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.service.TagService;
+import com.epam.esm.service.DateHandler;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -33,16 +33,14 @@ class GiftCertificateServiceImplTest {
     @Mock
     private TagDao tagDao = mock(TagDao.class);
     @Mock
-    private TagService tagService = mock(TagService.class);
-    @Mock
     private GiftCertificateTagDao certificateTagDao = mock(GiftCertificateTagDao.class);
     @Mock
-    private Clock clock;
-    private Clock fixedClock;
+    private DateHandler dateHandler = Mockito.mock(DateHandler.class);
 
     @InjectMocks
     private GiftCertificateServiceImpl certificateServiceImpl;
 
+    private static final LocalDateTime DATE_TIME = LocalDateTime.parse("2022-05-01T00:00:00.001");
     private static final GiftCertificate GIFT_CERTIFICATE_1 = new GiftCertificate(1, "ATV riding",
             "Description ATV riding", new BigDecimal("100"), 10, LocalDateTime.parse("2022-04-01T10:12:45.123"),
             LocalDateTime.parse("2022-04-07T14:15:13.257"), Arrays.asList(new Tag(1, "rest"), new Tag(2, "nature"), new Tag(4, "atv")));
@@ -108,18 +106,22 @@ class GiftCertificateServiceImplTest {
 
     private void findListCertificatesTest(List<List<String>> list, List<GiftCertificate> certificates, String query, Object... queryParams) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        if (list.get(0) != null) params.put(TEXT, list.get(0));
-        if (list.get(1) != null) params.put(TAG, list.get(1));
-        if (list.get(2) != null) params.put(SORTING, list.get(2));
+        if (list.get(0) != null) {
+            params.put(TEXT, list.get(0));
+        }
+        if (list.get(1) != null) {
+            params.put(TAG, list.get(1));
+        }
+        if (list.get(2) != null) {
+            params.put(SORTING, list.get(2));
+        }
         when(certificateDao.findListEntities(query, queryParams)).thenReturn(certificates);
         assertEquals(certificates, certificateServiceImpl.findListCertificates(params, 5, 0, 5));
     }
 
     @Test
     void createCertificate() {
-        fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
-        doReturn(fixedClock.instant()).when(clock).instant();
-        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(dateHandler.getCurrentDate()).thenReturn(DATE_TIME);
         when(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 0L)).thenReturn(Optional.of(GIFT_CERTIFICATE_8));
         certificateServiceImpl.createCertificate(GIFT_CERTIFICATE_8);
 
@@ -128,8 +130,8 @@ class GiftCertificateServiceImplTest {
                 GIFT_CERTIFICATE_8.getDescription(),
                 GIFT_CERTIFICATE_8.getPrice(),
                 GIFT_CERTIFICATE_8.getDuration(),
-                LocalDateTime.now(fixedClock),
-                LocalDateTime.now(fixedClock));
+                DATE_TIME,
+                DATE_TIME);
 
         verify(tagDao, times(1)).updateEntity(anyString(), any());
         verify(certificateTagDao, times(1)).updateEntity(anyString(), any());
@@ -137,14 +139,12 @@ class GiftCertificateServiceImplTest {
 
     @Test
     void updateCertificate() {
-        fixedClock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
-        doReturn(fixedClock.instant()).when(clock).instant();
-        doReturn(fixedClock.getZone()).when(clock).getZone();
+        when(dateHandler.getCurrentDate()).thenReturn(DATE_TIME);
         when(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 5L)).thenReturn(Optional.of(GIFT_CERTIFICATE_9));
         certificateServiceImpl.updateCertificate(GIFT_CERTIFICATE_9, 5);
 
         verify(certificateDao, times(1)).updateEntity(UPDATE_CERTIFICATE_FIELDS_DESCRIPTION_DURATION,
-                GIFT_CERTIFICATE_9.getDescription(), GIFT_CERTIFICATE_9.getDuration(), LocalDateTime.now(fixedClock), 5L);
+                GIFT_CERTIFICATE_9.getDescription(), GIFT_CERTIFICATE_9.getDuration(), DATE_TIME, 5L);
 
         verify(tagDao, times(1)).updateEntity(anyString(), any());
         verify(certificateTagDao, times(2)).updateEntity(anyString(), any());

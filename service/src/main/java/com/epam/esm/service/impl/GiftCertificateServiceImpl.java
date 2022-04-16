@@ -5,6 +5,7 @@ import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
+import com.epam.esm.service.DateHandler;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.exception.NoSuchEntityException;
 import lombok.SneakyThrows;
@@ -14,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
 import java.lang.reflect.Field;
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -35,14 +34,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateDao certificateDao;
     private final GiftCertificateTagDao certificateTagDao;
     private final TagDao tagDao;
-    private final Clock clock;
+    private final DateHandler dateHandler;
 
     @Autowired
-    public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, GiftCertificateTagDao certificateTagDao, TagDao tagDao, Clock clock) {
+    public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, GiftCertificateTagDao certificateTagDao, TagDao tagDao, DateHandler dateHandler) {
         this.certificateDao = certificateDao;
         this.certificateTagDao = certificateTagDao;
         this.tagDao = tagDao;
-        this.clock = clock;
+        this.dateHandler = dateHandler;
     }
 
     @Override
@@ -79,15 +78,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public GiftCertificate createCertificate(GiftCertificate certificate) {
-        LocalDateTime dateTime = LocalDateTime.now(clock);
-
-        long key = certificateDao.createEntity(CREATE_CERTIFICATE,
-                certificate.getName(),
-                certificate.getDescription(),
-                certificate.getPrice(),
-                certificate.getDuration(),
-                dateTime,
-                dateTime);
+        long key = certificateDao.createEntity(CREATE_CERTIFICATE, certificate.getName(), certificate.getDescription(), certificate.getPrice(),
+                certificate.getDuration(), dateHandler.getCurrentDate(), dateHandler.getCurrentDate());
 
         Object[] tags = certificate.getTags().stream().map(Tag::getName).distinct().toArray(Object[]::new);
         tagDao.updateEntity(CREATE_A_LOT_TAGS_PART_1 + createQueryParams("?", tags.length) + CREATE_A_LOT_TAGS_PART_2, tags);
@@ -112,7 +104,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
 
         query.append(LAST_UPDATE_DATE).append(WHERE_ID);
-        params.add(LocalDateTime.now(clock));
+        params.add(dateHandler.getCurrentDate());
         params.add(id);
         certificateDao.updateEntity(query.toString(), params.toArray());
 
