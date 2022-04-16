@@ -49,7 +49,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     @NonNull
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @NonNull HttpHeaders headers,
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException ex, @NonNull HttpHeaders headers,
                                                                   @NonNull HttpStatus status, @NonNull WebRequest request) {
         saveLog(Exception.class, ex, request.getParameterMap());
         return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.ARGUMENT_NOT_VALID,
@@ -69,38 +69,38 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    protected ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
         saveLog(MethodArgumentTypeMismatchException.class, ex, request.getParameterMap());
         return ResponseEntity.status(NOT_FOUND).body(new ApiError(ExceptionCode.NOT_FOUND_EXCEPTION,
                 "The request with the '" + ex.getParameter().getParameterName() + "' parameter cannot be executed"));
     }
 
     @ExceptionHandler(DataAccessException.class)
-    protected ResponseEntity<Object> handleDaoException(DataAccessException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpDaoException(DataAccessException ex, WebRequest request) {
         saveLog(DataAccessException.class, ex, request.getParameterMap());
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.DATABASE_ERROR, "Database error"));
     }
 
     @ExceptionHandler(DuplicateEntityException.class)
-    protected ResponseEntity<Object> handleDuplicateEntityException(DuplicateEntityException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpDuplicateEntityException(DuplicateEntityException ex, WebRequest request) {
         saveLog(DuplicateEntityException.class, ex, request.getParameterMap());
         return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.DUPLICATE_ENTITY_EXCEPTION, ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(NoSuchEntityException.class)
-    protected ResponseEntity<Object> handleNoSuchEntityException(NoSuchEntityException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpNoSuchEntityException(NoSuchEntityException ex, WebRequest request) {
         saveLog(NoSuchEntityException.class, ex, request.getParameterMap());
         return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.NO_SUCH_ENTITY_EXCEPTION, ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(NullPointerException.class)
-    protected ResponseEntity<Object> handleNullPointerException(NullPointerException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpNullPointerException(NullPointerException ex, WebRequest request) {
         saveLog(NullPointerException.class, ex, request.getParameterMap());
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.INTERNAL_SERVER_ERROR_EXCEPTION, "Internal server error"));
     }
 
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpException(Exception ex, WebRequest request) {
         saveLog(Exception.class, ex, request.getParameterMap());
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.INTERNAL_SERVER_ERROR_EXCEPTION, "Internal server error"));
     }
