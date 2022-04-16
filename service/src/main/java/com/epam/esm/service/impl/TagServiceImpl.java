@@ -10,9 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
 
-import static com.epam.esm.util.SqlQuery.*;
+import static com.epam.esm.util.SqlQuery.FIND_TAG_BY_ID;
+import static com.epam.esm.util.SqlQuery.FIND_TAG_BY_NAME;
+import static com.epam.esm.util.SqlQuery.FIND_ALL_TAGS;
+import static com.epam.esm.util.SqlQuery.CREATE_TAG;
+import static com.epam.esm.util.SqlQuery.UPDATE_TAG;
+import static com.epam.esm.util.SqlQuery.DELETE_CERTIFICATE_TAG_BY_TAG_ID;
+import static com.epam.esm.util.SqlQuery.DELETE_TAG;
 
 @Service
 public class TagServiceImpl implements TagService {

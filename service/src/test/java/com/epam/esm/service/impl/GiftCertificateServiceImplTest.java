@@ -14,13 +14,34 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.math.BigDecimal;
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static com.epam.esm.service.util.ColumnName.*;
-import static com.epam.esm.service.util.SqlQueryTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.any;
+import static com.epam.esm.service.util.ColumnName.LAST_UPDATE_DATE;
+import static com.epam.esm.service.util.ColumnName.DESC;
+import static com.epam.esm.service.util.ColumnName.NAME;
+import static com.epam.esm.service.util.SqlQueryTest.FIND_CERTIFICATE_BY_ID;
+import static com.epam.esm.service.util.SqlQueryTest.FIND_ALL_CERTIFICATES_ORDER_BY_DATE_DESC;
+import static com.epam.esm.service.util.SqlQueryTest.VISIT;
+import static com.epam.esm.service.util.SqlQueryTest.FIND_ALL_CERTIFICATES_BY_PART_NAME_OR_DESCRIPTION_ORDER_BY_DATE_DESC;
+import static com.epam.esm.service.util.SqlQueryTest.REST;
+import static com.epam.esm.service.util.SqlQueryTest.FIND_ALL_CERTIFICATES_WITH_SPECIFIC_TAG_ORDER_BY_DATE_DESC;
+import static com.epam.esm.service.util.SqlQueryTest.RIDING;
+import static com.epam.esm.service.util.SqlQueryTest.FIND_ALL_CERTIFICATES_BY_PART_NAME_OR_DESCRIPTION_WITH_SPECIFIC_TAG_ORDER_BY_DATE_AND_NAME;
+import static com.epam.esm.service.util.SqlQueryTest.CREATE_CERTIFICATE;
+import static com.epam.esm.service.util.SqlQueryTest.UPDATE_CERTIFICATE_FIELDS_DESCRIPTION_DURATION;
+import static com.epam.esm.service.util.SqlQueryTest.DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID;
+import static com.epam.esm.service.util.SqlQueryTest.DELETE_CERTIFICATE;
 
 @ExtendWith(MockitoExtension.class)
 class GiftCertificateServiceImplTest {

@@ -15,12 +15,34 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.epam.esm.util.SqlQuery.*;
+import static com.epam.esm.util.SqlQuery.FIND_ALL_CERTIFICATES;
+import static com.epam.esm.util.SqlQuery.FIND_CERTIFICATE_BY_ID;
+import static com.epam.esm.util.SqlQuery.SEARCH_BY_TEXT;
+import static com.epam.esm.util.SqlQuery.SEARCH_BY_TAG;
+import static com.epam.esm.util.SqlQuery.AND;
+import static com.epam.esm.util.SqlQuery.WHERE;
+import static com.epam.esm.util.SqlQuery.GROUP_BY_CERTIFICATE;
+import static com.epam.esm.util.SqlQuery.ORDER_BY;
+import static com.epam.esm.util.SqlQuery.OFFSET;
+import static com.epam.esm.util.SqlQuery.CREATE_CERTIFICATE;
+import static com.epam.esm.util.SqlQuery.CREATE_A_LOT_TAGS_PART_1;
+import static com.epam.esm.util.SqlQuery.CREATE_A_LOT_TAGS_PART_2;
+import static com.epam.esm.util.SqlQuery.CREATE_A_LOT_CERTIFICATE_TAGS_PART_1;
+import static com.epam.esm.util.SqlQuery.FIND_ID_TAG;
+import static com.epam.esm.util.SqlQuery.CREATE_A_LOT_CERTIFICATE_TAGS_PART_2;
+import static com.epam.esm.util.SqlQuery.UPDATE_CERTIFICATE;
+import static com.epam.esm.util.SqlQuery.SUFFIX;
+import static com.epam.esm.util.SqlQuery.WHERE_ID;
+import static com.epam.esm.util.SqlQuery.DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID;
+import static com.epam.esm.util.SqlQuery.DELETE_CERTIFICATE;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {

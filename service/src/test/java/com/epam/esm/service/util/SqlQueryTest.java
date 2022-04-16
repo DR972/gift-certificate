@@ -56,16 +56,12 @@ public final class SqlQueryTest {
     public static final String DELETE_TAG = "DELETE FROM tag WHERE id=?";
 
     /* Query to the GiftCertificateTag table */
-    public static final String CREATE_CERTIFICATE_TAG_BY_TAG_NAME = "INSERT INTO gift_certificate_tag VALUES(?, (SELECT tag.id FROM tag WHERE name=?))";
     public static final String DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID = "DELETE FROM gift_certificate_tag WHERE gift_certificate_id=?";
     public static final String DELETE_CERTIFICATE_TAG_BY_TAG_ID = "DELETE FROM gift_certificate_tag WHERE tag_id=?";
 
     public static final String VISIT = "visit";
     public static final String REST = "rest";
-    public static final String NATURE = "nature";
     public static final String RIDING = "riding";
-    public static final String SHOPPING = "shopping";
-    public static final String TOOL = "tool";
     public static final String NEW = "new";
 
     private SqlQueryTest() {

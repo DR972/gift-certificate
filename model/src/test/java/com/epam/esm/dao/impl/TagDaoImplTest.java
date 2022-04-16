@@ -20,7 +20,14 @@ import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static com.epam.esm.dao.util.SqlQueryTest.*;
+import static com.epam.esm.dao.util.SqlQueryTest.FIND_TAG_BY_ID;
+import static com.epam.esm.dao.util.SqlQueryTest.FIND_TAG_BY_NAME;
+import static com.epam.esm.dao.util.SqlQueryTest.FIND_ALL_TAGS;
+import static com.epam.esm.dao.util.SqlQueryTest.CREATE_TAG;
+import static com.epam.esm.dao.util.SqlQueryTest.UPDATE_TAG;
+import static com.epam.esm.dao.util.SqlQueryTest.NEW;
+import static com.epam.esm.dao.util.SqlQueryTest.DELETE_CERTIFICATE_TAG_BY_TAG_ID;
+import static com.epam.esm.dao.util.SqlQueryTest.DELETE_TAG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
