@@ -20,7 +20,6 @@ public class GiftCertificateTagDaoImpl extends AbstractDao<GiftCertificateTag, L
 
     @Override
     public GiftCertificateTag buildEntity(ResultSet rs) throws SQLException {
-        return new GiftCertificateTag(rs.getLong(GIFT_CERTIFICATE_ID),
-                rs.getLong(TAG_ID));
+        return new GiftCertificateTag(rs.getLong(GIFT_CERTIFICATE_ID), rs.getLong(TAG_ID));
     }
 }

@@ -20,7 +20,6 @@ public class TagDaoImpl extends AbstractDao<Tag, Long> implements TagDao {
 
     @Override
     public Tag buildEntity(ResultSet rs) throws SQLException {
-        return new Tag(rs.getLong(ID),
-                rs.getString(NAME));
+        return new Tag(rs.getLong(ID), rs.getString(NAME));
     }
 }

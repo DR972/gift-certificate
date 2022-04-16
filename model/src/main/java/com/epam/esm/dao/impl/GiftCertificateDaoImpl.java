@@ -28,13 +28,8 @@ public class GiftCertificateDaoImpl extends AbstractDao<GiftCertificate, Long> i
                 .map(t -> t.toString().replace("(", "").replace(")", "").replaceAll("\"", "").split(","))
                 .map(t -> new Tag(Long.parseLong(t[0]), t[1]))
                 .collect(Collectors.toList());
-        return new GiftCertificate(rs.getLong(ID),
-                rs.getString(NAME),
-                rs.getString(DESCRIPTION),
-                rs.getBigDecimal(PRICE),
-                rs.getInt(DURATION),
+        return new GiftCertificate(rs.getLong(ID), rs.getString(NAME), rs.getString(DESCRIPTION), rs.getBigDecimal(PRICE), rs.getInt(DURATION),
                 LocalDateTime.parse(rs.getString(CREATE_DATE).replaceAll(" ", "T")),
-                LocalDateTime.parse(rs.getString(LAST_UPDATE_DATE).replaceAll(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                tags);
+                LocalDateTime.parse(rs.getString(LAST_UPDATE_DATE).replaceAll(" ", "T"), DateTimeFormatter.ISO_LOCAL_DATE_TIME), tags);
     }
 }
