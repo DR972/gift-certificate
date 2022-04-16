@@ -1,6 +1,6 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.config.DataBaseConfigTest;
+import com.epam.esm.config.DatabaseTestConfiguration;
 import com.epam.esm.dao.GiftCertificateDao;
 import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.TagDao;
@@ -28,7 +28,7 @@ import static com.epam.esm.dao.util.SqlQueryTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = DataBaseConfigTest.class)
+@ContextConfiguration(classes = DatabaseTestConfiguration.class)
 @ActiveProfiles("test")
 public class GiftCertificateDaoImplTest {
     private static final GiftCertificate GIFT_CERTIFICATE_1 = new GiftCertificate(1, "ATV riding", "Description ATV riding",

@@ -1,6 +1,6 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.config.DataBaseConfigTest;
+import com.epam.esm.config.DatabaseTestConfiguration;
 import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
@@ -24,7 +24,7 @@ import static com.epam.esm.dao.util.SqlQueryTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = DataBaseConfigTest.class)
+@ContextConfiguration(classes = DatabaseTestConfiguration.class)
 @ActiveProfiles("test")
 public class TagDaoImplTest {
     private static final Tag TAG_1 = new Tag(1, "rest");

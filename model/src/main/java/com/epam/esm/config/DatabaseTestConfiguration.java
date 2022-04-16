@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 @ComponentScan("com.epam.esm")
 @PropertySource("classpath:database/database.properties")
 @Profile("test")
-public class DataBaseConfigTest {
+public class DatabaseTestConfiguration {
 
     @SneakyThrows
     @Bean
