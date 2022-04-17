@@ -1,5 +1,11 @@
 package com.epam.esm.dao;
 
+/**
+ * The class {@code ColumnName} stores column names.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 public final class ColumnName {
     public static final String ID = "id";
     public static final String NAME = "name";

@@ -3,6 +3,12 @@ package com.epam.esm.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * The  Enum {@code ExceptionCode} presents values which will be set into {@link GlobalExceptionHandler} in case generating exceptions.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @AllArgsConstructor
 @Getter
 public enum ExceptionCode {

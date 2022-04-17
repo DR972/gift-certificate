@@ -11,6 +11,12 @@ import java.sql.SQLException;
 import static com.epam.esm.dao.ColumnName.ID;
 import static com.epam.esm.dao.ColumnName.NAME;
 
+/**
+ * The class {@code TagDaoImpl} is implementation of interface {@link TagDao} and intended to work with {@link com.epam.esm.entity.Tag} table.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Repository
 public class TagDaoImpl extends AbstractDao<Tag, Long> implements TagDao {
 

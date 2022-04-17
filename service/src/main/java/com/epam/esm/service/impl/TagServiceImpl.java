@@ -20,6 +20,12 @@ import static com.epam.esm.util.SqlQuery.UPDATE_TAG;
 import static com.epam.esm.util.SqlQuery.DELETE_CERTIFICATE_TAG_BY_TAG_ID;
 import static com.epam.esm.util.SqlQuery.DELETE_TAG;
 
+/**
+ * The class {@code TagServiceImpl} is implementation of interface {@link TagService} and provides logic to work with {@link com.epam.esm.entity.Tag}.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Service
 public class TagServiceImpl implements TagService {
     private final TagDao tagDao;

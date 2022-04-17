@@ -17,6 +17,13 @@ import java.util.stream.Collectors;
 
 import static com.epam.esm.dao.ColumnName.*;
 
+/**
+ * The class {@code GiftCertificateDaoImpl} is implementation of interface {@link GiftCertificateDao}
+ * and intended to work with {@link com.epam.esm.entity.GiftCertificate} table.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Repository
 public class GiftCertificateDaoImpl extends AbstractDao<GiftCertificate, Long> implements GiftCertificateDao {
 

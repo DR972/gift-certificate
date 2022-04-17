@@ -7,12 +7,23 @@ import org.springframework.context.annotation.*;
 
 import javax.sql.DataSource;
 
+/**
+ * Class {@code DatabaseTestConfiguration} contains the spring database configuration for the model subproject tests.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Configuration
 @ComponentScan("com.epam.esm")
 @PropertySource("classpath:database/database.properties")
 @Profile("test")
 public class DatabaseTestConfiguration {
 
+    /**
+     * Create bean {@link DataSource} which will be used as data source.
+     *
+     * @return the ComboPooledDataSource
+     */
     @SneakyThrows
     @Bean
     public DataSource dataSource(@Value("${db.driver}") String driver,

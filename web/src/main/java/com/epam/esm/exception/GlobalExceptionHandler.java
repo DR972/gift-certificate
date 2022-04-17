@@ -27,6 +27,12 @@ import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
+/**
+ * The class {@code GlobalExceptionHandler} presents entity which will be returned from controller in case generating exceptions.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -70,7 +76,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.getLocalizedMessage()));
     }
 
-
+    /**
+     * The {@code handleHttpMethodArgumentTypeMismatchException} method returns a response if MethodArgumentTypeMismatchException is generated.
+     *
+     * @param ex      MethodArgumentTypeMismatchException exception
+     * @param request WebRequest request
+     * @return ResponseEntity<Object> object
+     */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<Object> handleHttpMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
         saveLog(MethodArgumentTypeMismatchException.class, ex, request.getParameterMap());
@@ -78,36 +90,78 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 "The request with the '" + ex.getParameter().getParameterName() + "' parameter cannot be executed"));
     }
 
+    /**
+     * The {@code DataAccessException} method returns a response if DataAccessException is generated.
+     *
+     * @param ex      DataAccessException exception
+     * @param request WebRequest request
+     * @return ResponseEntity<Object> object
+     */
     @ExceptionHandler(DataAccessException.class)
     protected ResponseEntity<Object> handleHttpDaoException(DataAccessException ex, WebRequest request) {
         saveLog(DataAccessException.class, ex, request.getParameterMap());
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.DATABASE_ERROR, "Database error"));
     }
 
+    /**
+     * The {@code handleHttpDuplicateEntityException} method returns a response if DuplicateEntityException is generated.
+     *
+     * @param ex      DuplicateEntityException exception
+     * @param request WebRequest request
+     * @return ResponseEntity<Object> object
+     */
     @ExceptionHandler(DuplicateEntityException.class)
     protected ResponseEntity<Object> handleHttpDuplicateEntityException(DuplicateEntityException ex, WebRequest request) {
         saveLog(DuplicateEntityException.class, ex, request.getParameterMap());
         return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.DUPLICATE_ENTITY_EXCEPTION, ex.getLocalizedMessage()));
     }
 
+    /**
+     * The {@code handleHttpNoSuchEntityException} method returns a response if NoSuchEntityException is generated.
+     *
+     * @param ex      NoSuchEntityException exception
+     * @param request WebRequest request
+     * @return ResponseEntity<Object> object
+     */
     @ExceptionHandler(NoSuchEntityException.class)
     protected ResponseEntity<Object> handleHttpNoSuchEntityException(NoSuchEntityException ex, WebRequest request) {
         saveLog(NoSuchEntityException.class, ex, request.getParameterMap());
         return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.NO_SUCH_ENTITY_EXCEPTION, ex.getLocalizedMessage()));
     }
 
+    /**
+     * The {@code handleHttpNullPointerException} method returns a response if NullPointerException is generated.
+     *
+     * @param ex      NullPointerException exception
+     * @param request WebRequest request
+     * @return ResponseEntity<Object> object
+     */
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<Object> handleHttpNullPointerException(NullPointerException ex, WebRequest request) {
         saveLog(NullPointerException.class, ex, request.getParameterMap());
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.INTERNAL_SERVER_ERROR_EXCEPTION, "Internal server error"));
     }
 
+    /**
+     * The {@code handleHttpException} method returns a response if Exception is generated.
+     *
+     * @param ex      Exception exception
+     * @param request WebRequest request
+     * @return ResponseEntity<Object> object
+     */
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> handleHttpException(Exception ex, WebRequest request) {
         saveLog(Exception.class, ex, request.getParameterMap());
         return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.INTERNAL_SERVER_ERROR_EXCEPTION, "Internal server error"));
     }
 
+    /**
+     * The {@code saveLog} method saves a log entry in case of an error.
+     *
+     * @param clazz               Class<?> clazz
+     * @param ex                  Exception exception
+     * @param requestParameterMap Map<String, String[]> requestParameterMap
+     */
     private void saveLog(Class<?> clazz, Exception ex, Map<String, String[]> requestParameterMap) {
         StringBuilder message = new StringBuilder(clazz.getName());
         for (StackTraceElement ste : ex.getStackTrace()) {

@@ -44,6 +44,13 @@ import static com.epam.esm.util.SqlQuery.WHERE_ID;
 import static com.epam.esm.util.SqlQuery.DELETE_CERTIFICATE_TAG_BY_CERTIFICATE_ID;
 import static com.epam.esm.util.SqlQuery.DELETE_CERTIFICATE;
 
+/**
+ * The class {@code GiftCertificateServiceImpl} is implementation of interface {@link GiftCertificateService}
+ * and provides logic to work with {@link com.epam.esm.entity.GiftCertificate}.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private static final String TAGS = "tags";

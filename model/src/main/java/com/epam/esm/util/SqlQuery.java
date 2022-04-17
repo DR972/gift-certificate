@@ -1,5 +1,11 @@
 package com.epam.esm.util;
 
+/**
+ * The class {@code SqlQuery} stores sql query.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 public final class SqlQuery {
 
     /* Query to the GiftCertificate table */

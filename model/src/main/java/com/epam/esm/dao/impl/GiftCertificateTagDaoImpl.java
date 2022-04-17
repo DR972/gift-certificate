@@ -11,6 +11,13 @@ import java.sql.SQLException;
 import static com.epam.esm.dao.ColumnName.GIFT_CERTIFICATE_ID;
 import static com.epam.esm.dao.ColumnName.TAG_ID;
 
+/**
+ * The class {@code GiftCertificateTagDaoImpl} is implementation of interface {@link GiftCertificateTagDao}
+ * and intended to work with {@link com.epam.esm.entity.GiftCertificateTag} table.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Repository
 public class GiftCertificateTagDaoImpl extends AbstractDao<GiftCertificateTag, Long> implements GiftCertificateTagDao {
 

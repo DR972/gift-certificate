@@ -15,6 +15,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
+/**
+ * Class {@code DataBaseConfig} contains the spring database configuration for the model subproject.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Configuration
 @PropertySource("classpath:database/database.properties")
 public class DataBaseConfig {
@@ -23,6 +29,11 @@ public class DataBaseConfig {
     @Value("classpath:database/create.sql")
     Resource dbCreate;
 
+    /**
+     * Create bean {@link DataSource} which will be used as data source.
+     *
+     * @return the ComboPooledDataSource
+     */
     @SneakyThrows
     @Bean
     public DataSource dataSource(@Value("${db.driver}") String driver,
@@ -50,12 +61,17 @@ public class DataBaseConfig {
         return dataSource;
     }
 
+    /**
+     * Create bean {@link DataSourceInitializer} which will be used to initialize the database.
+     *
+     * @param dataSource the data source
+     * @return DataSourceInitializer
+     */
     @Bean
     public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
 
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
         databasePopulator.addScript(dbSchema);
-//        databasePopulator.addScript(dbCreate);
         databasePopulator.setIgnoreFailedDrops(false);
 
         DataSourceInitializer initializer = new DataSourceInitializer();
@@ -65,11 +81,23 @@ public class DataBaseConfig {
         return initializer;
     }
 
+    /**
+     * Create bean {@link JdbcTemplate} which will be used for queries to database.
+     *
+     * @param dataSource the data source
+     * @return the jdbc template
+     */
     @Bean
     public JdbcTemplate jdbcTemplate(DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 
+    /**
+     * Create bean {@link PlatformTransactionManager} which will be used to perform transactions while the database is running.
+     *
+     * @param dataSource the data source
+     * @return PlatformTransactionManager
+     */
     @Bean
     public PlatformTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);

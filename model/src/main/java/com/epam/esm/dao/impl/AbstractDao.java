@@ -16,6 +16,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The class {@code AbstractDao} is designed for basic work with database tables.
+ *
+ * @param <T> indicates that for this instantiation of the DAO, will be used this type of Entity implementation.
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Repository
 public abstract class AbstractDao<T extends Entity<ID>, ID> implements Dao<T, ID> {
     private final JdbcTemplate jdbcTemplate;
@@ -53,5 +60,12 @@ public abstract class AbstractDao<T extends Entity<ID>, ID> implements Dao<T, ID
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
+    /**
+     * Create T entity.
+     *
+     * @param rs ResultSet
+     * @return T object
+     * @throws SQLException if there was an error accessing the database
+     */
     abstract T buildEntity(ResultSet rs) throws SQLException;
 }

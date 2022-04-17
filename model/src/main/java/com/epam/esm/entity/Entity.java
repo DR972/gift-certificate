@@ -6,6 +6,12 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * The class {@code Entity} represents the base class for all entities.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

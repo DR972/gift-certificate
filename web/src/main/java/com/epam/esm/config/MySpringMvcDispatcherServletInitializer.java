@@ -8,6 +8,12 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
+/**
+ * Class {@code MySpringMvcDispatcherServletInitializer} contains spring configuration for web subproject.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {

@@ -15,18 +15,31 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * The class {@code GiftCertificate} represents GiftCertificate entity.
+ *
+ * @author Dzmitry Rozmysl
+ * @version 1.0
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class GiftCertificate extends Entity<Long> {
 
+    /**
+     * The marker  interface {@code OnCreate} helps in providing validation of {@link com.epam.esm.entity.GiftCertificate} class
+     * fields when creating a new GiftCertificate object
+     */
     public interface OnCreate {
     }
 
+    /**
+     * The marker  interface {@code OnCreate} helps in providing validation of {@link com.epam.esm.entity.GiftCertificate} class
+     * fields when updating GiftCertificate object
+     */
     public interface OnUpdate {
     }
-
 
     @NotNull(groups = {OnCreate.class}, message = "The name field must not be null")
     @Size(groups = {OnCreate.class, OnUpdate.class}, min = 2, max = 30, message = "The Gift Certificate Name must contain from 2 to 20 characters")
