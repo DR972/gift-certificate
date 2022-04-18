@@ -5,27 +5,19 @@ import com.epam.esm.service.exception.NoSuchEntityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.lang.NonNull;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
  * The class {@code GlobalExceptionHandler} presents entity which will be returned from controller in case generating exceptions.
@@ -33,47 +25,66 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author Dzmitry Rozmysl
  * @version 1.0
  */
-@ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+@RestControllerAdvice
+public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @Override
-    @NonNull
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(@NonNull HttpMessageNotReadableException ex, @NonNull HttpHeaders headers,
-                                                                  @NonNull HttpStatus status, @NonNull WebRequest request) {
-        saveLog(Exception.class, ex, request.getParameterMap());
-        return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.MESSAGE_NOT_READABLE_EXCEPTION,
-                "The request is not being read"));
+    /**
+     * The {@code handleHttpMessageNotReadableException} method returns a response if HttpMessageNotReadableException is generated.
+     *
+     * @param ex      HttpMessageNotReadableException exception
+     * @param request WebRequest request
+     * @return ApiError object
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+        saveLog(HttpMessageNotReadableException.class, ex, request.getParameterMap());
+        return new ApiError(ExceptionCode.MESSAGE_NOT_READABLE_EXCEPTION, "The request is not being read");
     }
 
-    @Override
-    @NonNull
-    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(@NonNull HttpRequestMethodNotSupportedException ex,
-                                                                         @NonNull HttpHeaders headers, @NonNull HttpStatus status,
-                                                                         @NonNull WebRequest request) {
-        saveLog(Exception.class, ex, request.getParameterMap());
-        return ResponseEntity.status(METHOD_NOT_ALLOWED).body(new ApiError(ExceptionCode.METHOD_NOT_ALLOWED_EXCEPTION,
-                ex.getLocalizedMessage()));
+    /**
+     * The {@code handleHttpRequestMethodNotSupportedException} method returns a response if HttpRequestMethodNotSupportedException is generated.
+     *
+     * @param ex      HttpRequestMethodNotSupportedException exception
+     * @param request WebRequest request
+     * @return ApiError object
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    protected ApiError handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex, WebRequest request) {
+        saveLog(HttpRequestMethodNotSupportedException.class, ex, request.getParameterMap());
+        return new ApiError(ExceptionCode.METHOD_NOT_ALLOWED_EXCEPTION, ex.getLocalizedMessage());
     }
 
-    @Override
-    @NonNull
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException ex, @NonNull HttpHeaders headers,
-                                                                  @NonNull HttpStatus status, @NonNull WebRequest request) {
-        saveLog(Exception.class, ex, request.getParameterMap());
-        return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.ARGUMENT_NOT_VALID,
-                ex.getBindingResult().getFieldErrors().stream()
-                        .map(fieldError -> fieldError.getDefaultMessage() + "; ")
-                        .collect(Collectors.joining())));
+    /**
+     * The {@code handleHttpMethodArgumentNotValidException} method returns a response if MethodArgumentNotValidException is generated.
+     *
+     * @param ex      MethodArgumentNotValidException exception
+     * @param request WebRequest request
+     * @return ApiError object
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleHttpMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
+        saveLog(MethodArgumentNotValidException.class, ex, request.getParameterMap());
+        return new ApiError(ExceptionCode.ARGUMENT_NOT_VALID, ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> fieldError.getDefaultMessage() + "; ")
+                .collect(Collectors.joining()));
     }
 
-    @Override
-    @NonNull
-    protected ResponseEntity<Object> handleNoHandlerFoundException(@NonNull NoHandlerFoundException ex, @NonNull HttpHeaders headers,
-                                                                   @NonNull HttpStatus status, @NonNull WebRequest request) {
-        saveLog(NullPointerException.class, ex, request.getParameterMap());
-        return ResponseEntity.status(NOT_FOUND).body(new ApiError(ExceptionCode.NOT_FOUND_EXCEPTION,
-                ex.getLocalizedMessage()));
+    /**
+     * The {@code handleHttpNoHandlerFoundException} method returns a response if NoHandlerFoundException is generated.
+     *
+     * @param ex      NoHandlerFoundException exception
+     * @param request WebRequest request
+     * @return ApiError object
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleHttpNoHandlerFoundException(NoHandlerFoundException ex, WebRequest request) {
+        saveLog(NoHandlerFoundException.class, ex, request.getParameterMap());
+        return new ApiError(ExceptionCode.NOT_FOUND_EXCEPTION, ex.getLocalizedMessage());
     }
 
     /**
@@ -81,26 +92,28 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @param ex      MethodArgumentTypeMismatchException exception
      * @param request WebRequest request
-     * @return ResponseEntity<Object> object
+     * @return ApiError object
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    protected ResponseEntity<Object> handleHttpMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected ApiError handleHttpMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
         saveLog(MethodArgumentTypeMismatchException.class, ex, request.getParameterMap());
-        return ResponseEntity.status(NOT_FOUND).body(new ApiError(ExceptionCode.NOT_FOUND_EXCEPTION,
-                "The request with the '" + ex.getParameter().getParameterName() + "' parameter cannot be executed"));
+        return new ApiError(ExceptionCode.NOT_FOUND_EXCEPTION,
+                "The request with the '" + ex.getParameter().getParameterName() + "' parameter cannot be executed");
     }
 
     /**
-     * The {@code DataAccessException} method returns a response if DataAccessException is generated.
+     * The {@code handleHttpDataAccessException} method returns a response if DataAccessException is generated.
      *
      * @param ex      DataAccessException exception
      * @param request WebRequest request
-     * @return ResponseEntity<Object> object
+     * @return ApiError object
      */
     @ExceptionHandler(DataAccessException.class)
-    protected ResponseEntity<Object> handleHttpDaoException(DataAccessException ex, WebRequest request) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ApiError handleHttpDataAccessException(DataAccessException ex, WebRequest request) {
         saveLog(DataAccessException.class, ex, request.getParameterMap());
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.DATABASE_ERROR, "Database error"));
+        return new ApiError(ExceptionCode.DATABASE_ERROR, "Database error");
     }
 
     /**
@@ -108,12 +121,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @param ex      DuplicateEntityException exception
      * @param request WebRequest request
-     * @return ResponseEntity<Object> object
+     * @return ApiError object
      */
     @ExceptionHandler(DuplicateEntityException.class)
-    protected ResponseEntity<Object> handleHttpDuplicateEntityException(DuplicateEntityException ex, WebRequest request) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleHttpDuplicateEntityException(DuplicateEntityException ex, WebRequest request) {
         saveLog(DuplicateEntityException.class, ex, request.getParameterMap());
-        return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.DUPLICATE_ENTITY_EXCEPTION, ex.getLocalizedMessage()));
+        return new ApiError(ExceptionCode.DUPLICATE_ENTITY_EXCEPTION, ex.getLocalizedMessage());
     }
 
     /**
@@ -121,12 +135,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @param ex      NoSuchEntityException exception
      * @param request WebRequest request
-     * @return ResponseEntity<Object> object
+     * @return ApiError object
      */
     @ExceptionHandler(NoSuchEntityException.class)
-    protected ResponseEntity<Object> handleHttpNoSuchEntityException(NoSuchEntityException ex, WebRequest request) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    protected ApiError handleHttpNoSuchEntityException(NoSuchEntityException ex, WebRequest request) {
         saveLog(NoSuchEntityException.class, ex, request.getParameterMap());
-        return ResponseEntity.status(BAD_REQUEST).body(new ApiError(ExceptionCode.NO_SUCH_ENTITY_EXCEPTION, ex.getLocalizedMessage()));
+        return new ApiError(ExceptionCode.NO_SUCH_ENTITY_EXCEPTION, ex.getLocalizedMessage());
     }
 
     /**
@@ -134,12 +149,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @param ex      NullPointerException exception
      * @param request WebRequest request
-     * @return ResponseEntity<Object> object
+     * @return ApiError object
      */
     @ExceptionHandler(NullPointerException.class)
-    protected ResponseEntity<Object> handleHttpNullPointerException(NullPointerException ex, WebRequest request) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ApiError handleHttpNullPointerException(NullPointerException ex, WebRequest request) {
         saveLog(NullPointerException.class, ex, request.getParameterMap());
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.INTERNAL_SERVER_ERROR_EXCEPTION, "Internal server error"));
+        return new ApiError(ExceptionCode.INTERNAL_SERVER_ERROR_EXCEPTION, "Internal server error");
     }
 
     /**
@@ -147,12 +163,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      *
      * @param ex      Exception exception
      * @param request WebRequest request
-     * @return ResponseEntity<Object> object
+     * @return ApiError object
      */
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleHttpException(Exception ex, WebRequest request) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected ApiError handleHttpException(Exception ex, WebRequest request) {
         saveLog(Exception.class, ex, request.getParameterMap());
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiError(ExceptionCode.INTERNAL_SERVER_ERROR_EXCEPTION, "Internal server error"));
+        return new ApiError(ExceptionCode.INTERNAL_SERVER_ERROR_EXCEPTION, "Internal server error");
     }
 
     /**
