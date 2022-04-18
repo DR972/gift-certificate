@@ -77,7 +77,7 @@ public class TagServiceImplTest {
     }
 
     @Test
-    void createTagTest() {
+    void createTagShouldReturnResult() {
         when(tagDao.findEntity(FIND_TAG_BY_NAME, NEW)).thenReturn(Optional.of(new Tag()));
         when(tagDao.findEntity(FIND_TAG_BY_ID, 0L)).thenReturn(Optional.of(NEW_TAG));
         tagService.createTag(NEW_TAG);
@@ -93,7 +93,7 @@ public class TagServiceImplTest {
     }
 
     @Test
-    void updateTagTest() {
+    void updateTagShouldReturnResult() {
         when(tagDao.findEntity(FIND_TAG_BY_NAME, NEW)).thenReturn(Optional.of(new Tag()));
         when(tagDao.findEntity(FIND_TAG_BY_ID, 3L)).thenReturn(Optional.of(TAG_3));
         tagService.updateTag(NEW_TAG, 3L);

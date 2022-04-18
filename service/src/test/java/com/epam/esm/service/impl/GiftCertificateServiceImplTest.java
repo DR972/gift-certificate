@@ -170,7 +170,7 @@ class GiftCertificateServiceImplTest {
     }
 
     @Test
-    void updateCertificateTest() {
+    void updateCertificateShouldReturnResult() {
         when(dateHandler.getCurrentDate()).thenReturn(DATE_TIME);
         when(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, 5L)).thenReturn(Optional.of(GIFT_CERTIFICATE_9));
         certificateServiceImpl.updateCertificate(GIFT_CERTIFICATE_9, 5);
