@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 /**
- * Class {@code MySpringMvcDispatcherServletInitializer} contains spring configuration for web subproject.
+ * Class {@code MySpringMvcDispatcherServletInitializer} contains spring configuration.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0

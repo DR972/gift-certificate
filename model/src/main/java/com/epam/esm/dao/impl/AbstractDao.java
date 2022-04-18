@@ -61,7 +61,7 @@ public abstract class AbstractDao<T extends Entity<ID>, ID> implements Dao<T, ID
     }
 
     /**
-     * Create T entity.
+     * The method builds T entity.
      *
      * @param rs ResultSet
      * @return T object

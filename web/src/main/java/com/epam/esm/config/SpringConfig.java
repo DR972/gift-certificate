@@ -4,7 +4,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.*;
 
 /**
- * Class {@code SpringConfig} contains spring configuration for web subproject.
+ * Class {@code SpringConfig} contains spring configuration.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0

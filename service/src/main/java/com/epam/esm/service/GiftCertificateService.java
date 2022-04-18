@@ -15,7 +15,7 @@ import java.util.List;
 public interface GiftCertificateService {
 
     /**
-     * Provides logic for searching GiftCertificate.
+     * The method finds GiftCertificate.
      *
      * @param id GiftCertificate id
      * @return GiftCertificate object
@@ -23,7 +23,7 @@ public interface GiftCertificateService {
     GiftCertificate findCertificate(long id);
 
     /**
-     * Provides logic for searching for all GiftCertificate objects.
+     * The method finds all GiftCertificates.
      *
      * @param params      MultiValueMap<String, String> all request params
      * @param queryParams array of parameters for the query
@@ -32,7 +32,7 @@ public interface GiftCertificateService {
     List<GiftCertificate> findListCertificates(MultiValueMap<String, String> params, Object... queryParams);
 
     /**
-     * Provides logic for saving GiftCertificate in the database.
+     * The method performs the operation of saving GiftCertificate.
      *
      * @param certificate GiftCertificate
      * @return GiftCertificate object
@@ -40,7 +40,7 @@ public interface GiftCertificateService {
     GiftCertificate createCertificate(GiftCertificate certificate);
 
     /**
-     * Provides logic for updating GiftCertificate in the database.
+     * The method performs the operation of updating GiftCertificate.
      *
      * @param certificate new Gift Certificate parameters
      * @param id          GiftCertificate id
@@ -49,7 +49,7 @@ public interface GiftCertificateService {
     GiftCertificate updateCertificate(GiftCertificate certificate, long id);
 
     /**
-     * Provides logic for deleting GiftCertificate in the database.
+     * The method performs the operation of deleting GiftCertificate.
      *
      * @param id GiftCertificate id
      */

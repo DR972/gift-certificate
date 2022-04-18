@@ -13,7 +13,7 @@ import java.util.List;
 public interface TagService {
 
     /**
-     * Provides logic for searching Tag by id.
+     * The method finds Tag by id.
      *
      * @param id Tag id
      * @return Tag object
@@ -21,7 +21,7 @@ public interface TagService {
     Tag findTagById(long id);
 
     /**
-     * Provides logic for searching Tag by name.
+     * The method finds Tag by name.
      *
      * @param name Tag name
      * @return Tag object
@@ -29,14 +29,14 @@ public interface TagService {
     Tag findTagByName(String name);
 
     /**
-     * Provides logic for searching for all Tags objects.
+     * The method finds all Tags.
      *
      * @return list of Tag objects
      */
     List<Tag> findAllTags();
 
     /**
-     * Provides logic for saving Tag in the database.
+     * The method performs the operation of saving Tag.
      *
      * @param tag Tag
      * @return Tag object
@@ -44,7 +44,7 @@ public interface TagService {
     Tag createTag(Tag tag);
 
     /**
-     * Provides logic for updating Tag in the database.
+     * The method performs the operation of updating Tag.
      *
      * @param tag new Tag parameters
      * @param id  Tag id
@@ -53,7 +53,7 @@ public interface TagService {
     Tag updateTag(Tag tag, long id);
 
     /**
-     * Provides logic for deleting Tag in the database.
+     * The method performs the operation of deleting Tag.
      *
      * @param id Tag id
      */

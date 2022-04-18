@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface Dao<T extends Entity<ID>, ID> {
 
     /**
-     * Searches for the object T in the table 'T'.
+     * The method finds objects T in the table 'T'.
      *
      * @param query  database query
      * @param params array of parameters for the query
@@ -25,7 +25,7 @@ public interface Dao<T extends Entity<ID>, ID> {
     Optional<T> findEntity(String query, Object... params);
 
     /**
-     * Searches for all T objects in the table `T`.
+     * The method finds all T objects in the table `T`.
      *
      * @param query  database query
      * @param params array of parameters for the query
@@ -34,7 +34,7 @@ public interface Dao<T extends Entity<ID>, ID> {
     List<T> findListEntities(String query, Object... params);
 
     /**
-     * Performs various operations (update and delete) on the object T in the table 'T`.
+     * The method performs various operations (update and delete) on the object T in the table 'T'.
      *
      * @param query  database query
      * @param params array of parameters for the query
@@ -42,7 +42,7 @@ public interface Dao<T extends Entity<ID>, ID> {
     void updateEntity(String query, Object... params);
 
     /**
-     * Performs the operation of saving the object T in the table 'T'.
+     * The method performs the operation of saving the object T in the table 'T'.
      *
      * @param query  database query
      * @param params array of parameters for the query

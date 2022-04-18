@@ -8,7 +8,7 @@ import org.springframework.context.annotation.*;
 import javax.sql.DataSource;
 
 /**
- * Class {@code DatabaseTestConfiguration} contains the spring database configuration for the model subproject tests.
+ * Class {@code DatabaseTestConfiguration} contains the spring database configuration for the tests.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 public class DatabaseTestConfiguration {
 
     /**
-     * Create bean {@link DataSource} which will be used as data source.
+     * The {@link DataSource} method creates a component that will be used as a data source.
      *
      * @return the ComboPooledDataSource
      */

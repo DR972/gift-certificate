@@ -16,7 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 /**
- * Class {@code DataBaseConfig} contains the spring database configuration for the model subproject.
+ * Class {@code DataBaseConfig} contains the spring database configuration.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
@@ -30,7 +30,7 @@ public class DataBaseConfig {
     Resource dbCreate;
 
     /**
-     * Create bean {@link DataSource} which will be used as data source.
+     * The {@link DataSource} method creates a component that will be used as a data source.
      *
      * @return the ComboPooledDataSource
      */
@@ -62,7 +62,7 @@ public class DataBaseConfig {
     }
 
     /**
-     * Create bean {@link DataSourceInitializer} which will be used to initialize the database.
+     * The {@link DataSourceInitializer} method creates a component that will be used to initialize the database.
      *
      * @param dataSource the data source
      * @return DataSourceInitializer
@@ -82,7 +82,7 @@ public class DataBaseConfig {
     }
 
     /**
-     * Create bean {@link JdbcTemplate} which will be used for queries to database.
+     * The {@link JdbcTemplate} method creates a component that will be used for queries to database.
      *
      * @param dataSource the data source
      * @return the jdbc template
@@ -93,7 +93,7 @@ public class DataBaseConfig {
     }
 
     /**
-     * Create bean {@link PlatformTransactionManager} which will be used to perform transactions while the database is running.
+     * The {@link PlatformTransactionManager} method creates a component that will be used to perform transactions while the database is running.
      *
      * @param dataSource the data source
      * @return PlatformTransactionManager
