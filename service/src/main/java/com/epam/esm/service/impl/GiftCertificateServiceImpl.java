@@ -7,6 +7,8 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.DateHandler;
 import com.epam.esm.service.GiftCertificateService;
+import com.epam.esm.service.dto.GiftCertificateDto;
+import com.epam.esm.service.dto.converter.impl.GiftCertificateDtoConverter;
 import com.epam.esm.service.exception.NoSuchEntityException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,28 +61,29 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private static final String SORTING = "sorting";
     private static final String LAST_UPDATE_DATE = "last_update_date=?";
 
-
     private final GiftCertificateDao certificateDao;
     private final GiftCertificateTagDao certificateTagDao;
     private final TagDao tagDao;
     private final DateHandler dateHandler;
+    private final GiftCertificateDtoConverter certificateDtoConverter;
 
     @Autowired
-    public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, GiftCertificateTagDao certificateTagDao, TagDao tagDao, DateHandler dateHandler) {
+    public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, GiftCertificateTagDao certificateTagDao, TagDao tagDao, DateHandler dateHandler, GiftCertificateDtoConverter certificateDtoConverter) {
         this.certificateDao = certificateDao;
         this.certificateTagDao = certificateTagDao;
         this.tagDao = tagDao;
         this.dateHandler = dateHandler;
+        this.certificateDtoConverter = certificateDtoConverter;
     }
 
     @Override
-    public GiftCertificate findCertificate(long id) {
-        return certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, id).orElseThrow(
-                () -> new NoSuchEntityException("ex.noSuchEntity", " (id = " + id + ")"));
+    public GiftCertificateDto findCertificate(long id) {
+        return certificateDtoConverter.convertToDto(certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, id).orElseThrow(
+                () -> new NoSuchEntityException("ex.noSuchEntity", " (id = " + id + ")")));
     }
 
     @Override
-    public List<GiftCertificate> findListCertificates(MultiValueMap<String, String> params, Object... pageParams) {
+    public List<GiftCertificateDto> findListCertificates(MultiValueMap<String, String> params, Object... pageParams) {
         StringBuilder query = new StringBuilder(FIND_ALL_CERTIFICATES);
         List<Object> queryParams = new LinkedList<>();
         if (params.get(TEXT) != null || params.get(TAG) != null) {
@@ -101,12 +104,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
         query.append(OFFSET);
         queryParams.addAll(Arrays.asList(pageParams));
-        return certificateDao.findListEntities(query.toString(), queryParams.toArray());
+        return certificateDao.findListEntities(query.toString(), queryParams.toArray())
+                .stream().map(certificateDtoConverter::convertToDto).collect(Collectors.toList());
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GiftCertificate createCertificate(GiftCertificate certificate) {
+    public GiftCertificateDto createCertificate(GiftCertificateDto certificateDto) {
+        GiftCertificate certificate = certificateDtoConverter.convertToEntity(certificateDto);
         long key = certificateDao.createEntity(CREATE_CERTIFICATE, certificate.getName(), certificate.getDescription(), certificate.getPrice(),
                 certificate.getDuration(), dateHandler.getCurrentDate(), dateHandler.getCurrentDate());
 
@@ -120,7 +125,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @SneakyThrows
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public GiftCertificate updateCertificate(GiftCertificate certificate, long id) {
+    public GiftCertificateDto updateCertificate(GiftCertificateDto certificateDto, long id) {
+        GiftCertificate certificate = certificateDtoConverter.convertToEntity(certificateDto);
         findCertificate(id);
         List<Object> params = new LinkedList<>();
         StringBuilder query = new StringBuilder(UPDATE_CERTIFICATE);

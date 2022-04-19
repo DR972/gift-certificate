@@ -1,6 +1,6 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.service.dto.GiftCertificateDto;
 import com.epam.esm.service.GiftCertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,67 +43,67 @@ public class CertificateController {
     }
 
     /**
-     * Method for getting GiftCertificate by ID.
+     * Method for getting GiftCertificateDto by ID.
      *
-     * @param id GiftCertificate id
-     * @return GiftCertificate
+     * @param id GiftCertificateDto id
+     * @return GiftCertificateDto
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GiftCertificate getCertificateById(@PathVariable long id) {
+    public GiftCertificateDto getCertificateById(@PathVariable long id) {
         return certificateService.findCertificate(id);
     }
 
     /**
-     * Method for getting list of GiftCertificates from request parameters.
+     * Method for getting list of GiftCertificateDto objects from request parameters.
      *
      * @param allRequestParams request parameters, which include the information needed for the search
      * @param rows             number of lines per page (5 by default)
      * @param pageNumber       page number(default 0)
-     * @return list of GiftCertificates
+     * @return list of GiftCertificateDto objects
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<GiftCertificate> getAllCertificates(@RequestParam MultiValueMap<String, String> allRequestParams,
-                                                    @RequestParam(name = ROWS, defaultValue = "5") int rows,
-                                                    @RequestParam(name = PAGE_NUMBER, defaultValue = "0") int pageNumber) {
+    public List<GiftCertificateDto> getAllCertificates(@RequestParam MultiValueMap<String, String> allRequestParams,
+                                                       @RequestParam(name = ROWS, defaultValue = "5") int rows,
+                                                       @RequestParam(name = PAGE_NUMBER, defaultValue = "0") int pageNumber) {
         return certificateService.findListCertificates(allRequestParams, rows, pageNumber, rows);
     }
 
     /**
      * Method for saving new GiftCertificate.
-     * Annotated by {@link Validated} with parameters GiftCertificate.OnCreate.class provides validation of the fields
-     * of the GiftCertificate object when creating.
+     * Annotated by {@link Validated} with parameters GiftCertificateDto.OnCreate.class provides validation of the fields
+     * of the GiftCertificateDto object when creating.
      *
-     * @param certificate GiftCertificate
-     * @return created GiftCertificate
+     * @param certificateDto GiftCertificateDto
+     * @return created GiftCertificateDto
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GiftCertificate createCertificate(@Validated(GiftCertificate.OnCreate.class) @RequestBody GiftCertificate certificate) {
-        return certificateService.createCertificate(certificate);
+    public GiftCertificateDto createCertificate(@Validated(GiftCertificateDto.OnCreate.class) @RequestBody GiftCertificateDto certificateDto) {
+        return certificateService.createCertificate(certificateDto);
     }
 
     /**
      * Method for updating GiftCertificate.
-     * Annotated by {@link Validated} with parameters GiftCertificate.OnUpdate.class provides validation of the fields
-     * of the GiftCertificate object when updating.
+     * Annotated by {@link Validated} with parameters GiftCertificateDto.OnUpdate.class provides validation of the fields
+     * of the GiftCertificateDto object when updating.
      *
-     * @param certificate new GiftCertificate parameters
-     * @param id          GiftCertificate id
-     * @return updated GiftCertificate
+     * @param certificateDto new GiftCertificateDto parameters
+     * @param id             GiftCertificateDto id
+     * @return updated GiftCertificateDto
      */
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GiftCertificate updateCertificate(@Validated(GiftCertificate.OnUpdate.class) @RequestBody GiftCertificate certificate,
-                                             @PathVariable long id) {
-        return certificateService.updateCertificate(certificate, id);
+    public GiftCertificateDto updateCertificate(@Validated(GiftCertificateDto.OnUpdate.class) @RequestBody GiftCertificateDto certificateDto,
+                                                @PathVariable long id) {
+        return certificateService.updateCertificate(certificateDto, id);
     }
 
     /**
      * Method for removing GiftCertificate by ID.
      *
-     * @param id GiftCertificate id
+     * @param id GiftCertificateDto id
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

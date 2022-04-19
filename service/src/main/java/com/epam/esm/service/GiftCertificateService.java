@@ -1,6 +1,6 @@
 package com.epam.esm.service;
 
-import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.service.dto.GiftCertificateDto;
 import org.springframework.util.MultiValueMap;
 
 import java.util.List;
@@ -17,41 +17,41 @@ public interface GiftCertificateService {
     /**
      * The method finds GiftCertificate.
      *
-     * @param id GiftCertificate id
-     * @return GiftCertificate object
+     * @param id GiftCertificateDto id
+     * @return GiftCertificateDto object
      */
-    GiftCertificate findCertificate(long id);
+    GiftCertificateDto findCertificate(long id);
 
     /**
      * The method finds all GiftCertificates.
      *
      * @param params      MultiValueMap<String, String> all request params
      * @param queryParams array of parameters for the query
-     * @return list of GiftCertificate objects
+     * @return list of GiftCertificateDto objects
      */
-    List<GiftCertificate> findListCertificates(MultiValueMap<String, String> params, Object... queryParams);
+    List<GiftCertificateDto> findListCertificates(MultiValueMap<String, String> params, Object... queryParams);
 
     /**
      * The method performs the operation of saving GiftCertificate.
      *
-     * @param certificate GiftCertificate
-     * @return GiftCertificate object
+     * @param certificateDto GiftCertificateDto
+     * @return GiftCertificateDto object
      */
-    GiftCertificate createCertificate(GiftCertificate certificate);
+    GiftCertificateDto createCertificate(GiftCertificateDto certificateDto);
 
     /**
      * The method performs the operation of updating GiftCertificate.
      *
-     * @param certificate new Gift Certificate parameters
-     * @param id          GiftCertificate id
-     * @return GiftCertificate object
+     * @param certificateDto new GiftCertificateDto parameters
+     * @param id             GiftCertificateDto id
+     * @return GiftCertificateDto object
      */
-    GiftCertificate updateCertificate(GiftCertificate certificate, long id);
+    GiftCertificateDto updateCertificate(GiftCertificateDto certificateDto, long id);
 
     /**
      * The method performs the operation of deleting GiftCertificate.
      *
-     * @param id GiftCertificate id
+     * @param id GiftCertificateDto id
      */
     void deleteCertificate(long id);
 }

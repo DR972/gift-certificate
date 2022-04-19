@@ -1,6 +1,6 @@
 package com.epam.esm.controller;
 
-import com.epam.esm.entity.Tag;
+import com.epam.esm.service.dto.TagDto;
 import com.epam.esm.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,60 +38,60 @@ public class TagController {
     }
 
     /**
-     * Method for getting Tag by ID.
+     * Method for getting TagDto by ID.
      *
-     * @param id Tag id
-     * @return Tag
+     * @param id TagDto id
+     * @return TagDto
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Tag getTagById(@PathVariable long id) {
+    public TagDto getTagById(@PathVariable long id) {
         return tagService.findTagById(id);
     }
 
 
     /**
-     * Method for getting list of all Tags.
+     * Method for getting list of all TagDto objects.
      *
-     * @return list of Tags
+     * @return list of TagDto objects
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Tag> getTagList() {
+    public List<TagDto> getTagList() {
         return tagService.findAllTags();
     }
 
     /**
      * Method for saving new Tag.
-     * Annotated by {@link Validated} with parameters Tag.OnCreate.class provides validation of the fields of the Tag object when creating.
+     * Annotated by {@link Validated} with parameters TagDto.OnCreate.class provides validation of the fields of the TagDto object when creating.
      *
-     * @param tag Tag
-     * @return created Tag
+     * @param tagDto TagDto
+     * @return created TagDto
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Tag createTag(@Validated(Tag.OnCreate.class) @RequestBody Tag tag) {
-        return tagService.createTag(tag);
+    public TagDto createTag(@Validated(TagDto.OnCreate.class) @RequestBody TagDto tagDto) {
+        return tagService.createTag(tagDto);
     }
 
     /**
      * Method for updating Tag.
-     * Annotated by {@link Validated} with parameters Tag.OnCreate.class provides validation of the fields of the Tag object when updating.
+     * Annotated by {@link Validated} with parameters TagDto.OnCreate.class provides validation of the fields of the TagDto object when updating.
      *
-     * @param tag new Tag parameters
-     * @param id  Tag id
-     * @return updated Tag
+     * @param tagDto new TagDto parameters
+     * @param id     TagDto id
+     * @return updated TagDto
      */
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Tag updateTag(@PathVariable long id, @Validated(Tag.OnCreate.class) @RequestBody Tag tag) {
-        return tagService.updateTag(tag, id);
+    public TagDto updateTag(@PathVariable long id, @Validated(TagDto.OnCreate.class) @RequestBody TagDto tagDto) {
+        return tagService.updateTag(tagDto, id);
     }
 
     /**
      * Method for removing Tag by ID.
      *
-     * @param id Tag id
+     * @param id TagDto id
      */
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

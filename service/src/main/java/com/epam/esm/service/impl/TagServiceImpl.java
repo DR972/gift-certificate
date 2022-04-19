@@ -4,6 +4,8 @@ import com.epam.esm.dao.GiftCertificateTagDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.service.TagService;
+import com.epam.esm.service.dto.TagDto;
+import com.epam.esm.service.dto.converter.impl.TagDtoConverter;
 import com.epam.esm.service.exception.DuplicateEntityException;
 import com.epam.esm.service.exception.NoSuchEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.epam.esm.util.SqlQuery.FIND_TAG_BY_ID;
 import static com.epam.esm.util.SqlQuery.FIND_TAG_BY_NAME;
@@ -30,16 +33,19 @@ import static com.epam.esm.util.SqlQuery.DELETE_TAG;
 public class TagServiceImpl implements TagService {
     private final TagDao tagDao;
     private final GiftCertificateTagDao certificateTagDao;
+    private final TagDtoConverter tagDtoConverter;
 
     @Autowired
-    public TagServiceImpl(TagDao tagDao, GiftCertificateTagDao certificateTagDao) {
+    public TagServiceImpl(TagDao tagDao, GiftCertificateTagDao certificateTagDao, TagDtoConverter tagDtoConverter) {
         this.tagDao = tagDao;
         this.certificateTagDao = certificateTagDao;
+        this.tagDtoConverter = tagDtoConverter;
     }
 
     @Override
-    public Tag findTagById(long id) {
-        return tagDao.findEntity(FIND_TAG_BY_ID, id).orElseThrow(() -> new NoSuchEntityException("ex.noSuchEntity", " (id = " + id + ")"));
+    public TagDto findTagById(long id) {
+        return tagDtoConverter.convertToDto(tagDao.findEntity(FIND_TAG_BY_ID, id).orElseThrow(() ->
+                new NoSuchEntityException("ex.noSuchEntity", " (id = " + id + ")")));
     }
 
     @Override
@@ -48,12 +54,13 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> findAllTags() {
-        return tagDao.findListEntities(FIND_ALL_TAGS);
+    public List<TagDto> findAllTags() {
+        return tagDao.findListEntities(FIND_ALL_TAGS).stream().map(tagDtoConverter::convertToDto).collect(Collectors.toList());
     }
 
     @Override
-    public Tag createTag(Tag tag) {
+    public TagDto createTag(TagDto tagDto) {
+        Tag tag = tagDtoConverter.convertToEntity(tagDto);
         if (findTagByName(tag.getName()).getName() != null) {
             throw new DuplicateEntityException("ex.duplicate", tag.getName() + ")");
         }
@@ -62,7 +69,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag updateTag(Tag tag, long id) {
+    public TagDto updateTag(TagDto tagDto, long id) {
+        Tag tag = tagDtoConverter.convertToEntity(tagDto);
         if (findTagByName(tag.getName()).getName() != null) {
             throw new DuplicateEntityException("ex.duplicate", tag.getName() + ")");
         }
