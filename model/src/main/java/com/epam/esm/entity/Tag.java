@@ -27,8 +27,8 @@ public class Tag extends Entity<Long> {
     public interface OnCreate {
     }
 
-    @Size(groups = {Tag.OnCreate.class, GiftCertificate.OnCreate.class, GiftCertificate.OnUpdate.class}, min = 2, max = 30, message = "The Tag Name must contain from 2 to 30 characters")
-    @NotNull(groups = Tag.OnCreate.class, message = "The name field must not be null")
+    @Size(groups = {Tag.OnCreate.class, GiftCertificate.OnCreate.class, GiftCertificate.OnUpdate.class}, min = 2, max = 30, message = "ex.tagNameSize")
+    @NotNull(groups = Tag.OnCreate.class, message = "ex.tagNameNotNull")
     private String name;
 
     public Tag(long id, String name) {

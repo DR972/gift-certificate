@@ -39,7 +39,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag findTagById(long id) {
-        return tagDao.findEntity(FIND_TAG_BY_ID, id).orElseThrow(() -> new NoSuchEntityException("There is no tag with this ID = " + id));
+        return tagDao.findEntity(FIND_TAG_BY_ID, id).orElseThrow(() -> new NoSuchEntityException("ex.noSuchEntity", " (id = " + id + ")"));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag createTag(Tag tag) {
         if (findTagByName(tag.getName()).getName() != null) {
-            throw new DuplicateEntityException("A tag named '" + tag.getName() + "' already exists");
+            throw new DuplicateEntityException("ex.duplicate", tag.getName() + ")");
         }
         long key = tagDao.createEntity(CREATE_TAG, tag.getName());
         return findTagById(key);
@@ -64,7 +64,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public Tag updateTag(Tag tag, long id) {
         if (findTagByName(tag.getName()).getName() != null) {
-            throw new DuplicateEntityException("A tag named '" + tag.getName() + "' already exists");
+            throw new DuplicateEntityException("ex.duplicate", tag.getName() + ")");
         }
         findTagById(id);
         tagDao.updateEntity(UPDATE_TAG, tag.getName(), id);

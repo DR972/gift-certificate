@@ -76,7 +76,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public GiftCertificate findCertificate(long id) {
         return certificateDao.findEntity(FIND_CERTIFICATE_BY_ID, id).orElseThrow(
-                () -> new NoSuchEntityException("There is no Gift Certificate with this ID = " + id));
+                () -> new NoSuchEntityException("ex.noSuchEntity", " (id = " + id + ")"));
     }
 
     @Override
