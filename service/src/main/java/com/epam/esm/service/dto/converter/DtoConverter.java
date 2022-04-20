@@ -11,7 +11,7 @@ package com.epam.esm.service.dto.converter;
 public interface DtoConverter<E, D> {
 
     /**
-     * The Method for converting dto to entity.
+     * The method for converting dto to entity.
      *
      * @param dto dto entity to convert
      * @return converted entity
@@ -20,7 +20,7 @@ public interface DtoConverter<E, D> {
     E convertToEntity(D dto);
 
     /**
-     * The Method for converting entity to dto.
+     * The method for converting entity to dto.
      *
      * @param entity source entity to convert
      * @return converted dto entity

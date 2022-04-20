@@ -6,7 +6,7 @@ import com.epam.esm.entity.GiftCertificate;
 import org.springframework.stereotype.Component;
 
 /**
- * The Class {@code GiftCertificateDtoConverter} is implementation of interface {@link DtoConverter}
+ * The class {@code GiftCertificateDtoConverter} is implementation of interface {@link DtoConverter}
  * and intended to work with {@link GiftCertificate} and {@link GiftCertificateDto} objects.
  *
  * @author Dzmitry Rozmysl

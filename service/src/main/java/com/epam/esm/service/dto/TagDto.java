@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * The Class {@code TagDto} represents TagDto.
+ * The class {@code TagDto} represents TagDto.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0

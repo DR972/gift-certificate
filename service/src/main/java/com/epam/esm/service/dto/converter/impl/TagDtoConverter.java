@@ -6,7 +6,7 @@ import com.epam.esm.entity.Tag;
 import org.springframework.stereotype.Component;
 
 /**
- * The Class {@code TagDtoConverter} is implementation of interface {@link DtoConverter}
+ * The class {@code TagDtoConverter} is implementation of interface {@link DtoConverter}
  * and intended to work with {@link Tag} and {@link TagDto} objects.
  *
  * @author Dzmitry Rozmysl

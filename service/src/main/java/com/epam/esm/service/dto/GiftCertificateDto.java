@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * The Class {@code GiftCertificateDto} represents GiftCertificateDto.
+ * The class {@code GiftCertificateDto} represents GiftCertificateDto.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
