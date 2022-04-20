@@ -40,34 +40,60 @@ public class GiftCertificateDto {
     public interface OnUpdate {
     }
 
+    /**
+     * GiftCertificateDto id.
+     */
     private long id;
-
+    /**
+     * GiftCertificateDto name.
+     */
     @NotNull(groups = {GiftCertificateDto.OnCreate.class}, message = "ex.certificateNameNotNull")
     @Size(groups = {GiftCertificateDto.OnCreate.class, GiftCertificateDto.OnUpdate.class}, min = 2, max = 30, message = "ex.certificateNameSize")
     private String name;
-
+    /**
+     * GiftCertificateDto description.
+     */
     @NotNull(groups = {GiftCertificateDto.OnCreate.class}, message = "ex.descriptionNotNull")
     @Size(groups = {GiftCertificateDto.OnCreate.class, GiftCertificateDto.OnUpdate.class}, min = 2, max = 200, message = "ex.descriptionSize")
     private String description;
-
+    /**
+     * GiftCertificateDto price.
+     */
     @NotNull(groups = {GiftCertificateDto.OnCreate.class}, message = "ex.priceNotNull")
     @Positive(groups = {GiftCertificateDto.OnCreate.class, GiftCertificateDto.OnUpdate.class}, message = "ex.pricePositive")
     private BigDecimal price;
-
+    /**
+     * GiftCertificateDto duration.
+     */
     @NotNull(groups = {GiftCertificateDto.OnCreate.class}, message = "ex.durationNotNull")
     @Positive(groups = {GiftCertificateDto.OnCreate.class, GiftCertificateDto.OnUpdate.class}, message = "ex.durationPositive")
     private Integer duration;
-
+    /**
+     * GiftCertificateDto createDate.
+     */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createDate;
-
+    /**
+     * GiftCertificateDto lastUpdateDate.
+     */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime lastUpdateDate;
-
+    /**
+     * List<Tag> tags.
+     */
     @NotEmpty(groups = {GiftCertificateDto.OnCreate.class}, message = "ex.tagsNotNull")
     @Valid
     private List<Tag> tags;
 
+    /**
+     * The constructor creates a GiftCertificateDto object
+     *
+     * @param name        String name
+     * @param description String description
+     * @param price       BigDecimal price
+     * @param duration    int duration
+     * @param tags        List<Tag> tags
+     */
     public GiftCertificateDto(String name, String description, BigDecimal price, Integer duration, List<Tag> tags) {
         this.name = name;
         this.description = description;

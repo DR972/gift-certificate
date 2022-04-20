@@ -9,12 +9,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 /**
- * Class {@code MySpringMvcDispatcherServletInitializer} contains spring configuration.
+ * Class {@code DispatcherServletInitializer} contains spring configuration.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
  */
-public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return null;
@@ -22,7 +22,7 @@ public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationC
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{SpringConfig.class};
+        return new Class[]{WebConfig.class};
     }
 
     @Override

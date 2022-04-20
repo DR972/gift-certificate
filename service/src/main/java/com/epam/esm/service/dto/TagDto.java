@@ -24,7 +24,13 @@ public class TagDto {
     public interface OnCreate {
     }
 
+    /**
+     * TagDto id.
+     */
     private long id;
+    /**
+     * TagDto name.
+     */
     @Size(groups = {TagDto.OnCreate.class, GiftCertificateDto.OnCreate.class, GiftCertificateDto.OnUpdate.class}, min = 2, max = 30, message = "ex.tagNameSize")
     @NotNull(groups = TagDto.OnCreate.class, message = "ex.tagNameNotNull")
     private String name;

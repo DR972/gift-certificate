@@ -10,10 +10,25 @@ import lombok.Data;
  */
 @Data
 public class ApiError {
+    /**
+     * request status.
+     */
     private int status;
+    /**
+     * error message.
+     */
     private String errorMessage;
+    /**
+     * error code.
+     */
     private int errorCode;
 
+    /**
+     * The constructor creates an ApiError object
+     *
+     * @param exceptionCode ExceptionCode exceptionCode
+     * @param errorMessage  String errorMessage
+     */
     public ApiError(ExceptionCode exceptionCode, String errorMessage) {
         status = exceptionCode.getStatus();
         this.errorMessage = errorMessage;

@@ -15,7 +15,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.dao.ColumnName.*;
+import static com.epam.esm.dao.ColumnName.ID;
+import static com.epam.esm.dao.ColumnName.NAME;
+import static com.epam.esm.dao.ColumnName.DESCRIPTION;
+import static com.epam.esm.dao.ColumnName.PRICE;
+import static com.epam.esm.dao.ColumnName.DURATION;
+import static com.epam.esm.dao.ColumnName.CREATE_DATE;
+import static com.epam.esm.dao.ColumnName.LAST_UPDATE_DATE;
 
 /**
  * The class {@code GiftCertificateDaoImpl} is implementation of interface {@link GiftCertificateDao}
@@ -27,6 +33,11 @@ import static com.epam.esm.dao.ColumnName.*;
 @Repository
 public class GiftCertificateDaoImpl extends AbstractDao<GiftCertificate, Long> implements GiftCertificateDao {
 
+    /**
+     * The constructor creates an GiftCertificateDaoImpl object
+     *
+     * @param jdbcTemplate JdbcTemplate
+     */
     public GiftCertificateDaoImpl(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
     }

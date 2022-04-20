@@ -51,6 +51,10 @@ public final class SqlQuery {
     public static final String SUFFIX = "=?,";
     public static final String OFFSET = " offset (? * ?) ROWS fetch next ? ROWS only";
 
+    /**
+     * Private constructor without parameters.
+     * Restrict instantiation of the class.
+     */
     private SqlQuery() {
     }
 }

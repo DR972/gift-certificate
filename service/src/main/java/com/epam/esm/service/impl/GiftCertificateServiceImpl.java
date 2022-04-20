@@ -60,13 +60,36 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private static final String TAG = "tag";
     private static final String SORTING = "sorting";
     private static final String LAST_UPDATE_DATE = "last_update_date=?";
-
+    /**
+     * GiftCertificateDao certificateDao.
+     */
     private final GiftCertificateDao certificateDao;
+    /**
+     * GiftCertificateTagDao certificateTagDao.
+     */
     private final GiftCertificateTagDao certificateTagDao;
+    /**
+     * TagDao tagDao.
+     */
     private final TagDao tagDao;
+    /**
+     * DateHandler dateHandler.
+     */
     private final DateHandler dateHandler;
+    /**
+     * GiftCertificateDtoConverter certificateDtoConverter.
+     */
     private final GiftCertificateDtoConverter certificateDtoConverter;
 
+    /**
+     * The constructor creates a GiftCertificateServiceImpl object
+     *
+     * @param certificateDao          GiftCertificateDao certificateDao
+     * @param certificateTagDao       GiftCertificateTagDao certificateTagDao
+     * @param tagDao                  TagDao tagDao
+     * @param dateHandler             DateHandler dateHandler
+     * @param certificateDtoConverter GiftCertificateDtoConverter certificateDtoConverter
+     */
     @Autowired
     public GiftCertificateServiceImpl(GiftCertificateDao certificateDao, GiftCertificateTagDao certificateTagDao, TagDao tagDao, DateHandler dateHandler, GiftCertificateDtoConverter certificateDtoConverter) {
         this.certificateDao = certificateDao;

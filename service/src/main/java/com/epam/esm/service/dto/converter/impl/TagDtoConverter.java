@@ -17,21 +17,11 @@ public class TagDtoConverter implements DtoConverter<Tag, TagDto> {
 
     @Override
     public Tag convertToEntity(TagDto dto) {
-        Tag tag = new Tag();
-
-        tag.setId(dto.getId());
-        tag.setName(dto.getName());
-
-        return tag;
+        return new Tag(dto.getId(), dto.getName());
     }
 
     @Override
     public TagDto convertToDto(Tag entity) {
-        TagDto tagDto = new TagDto();
-
-        tagDto.setId(entity.getId());
-        tagDto.setName(entity.getName());
-
-        return tagDto;
+        return new TagDto(entity.getId(), entity.getName());
     }
 }

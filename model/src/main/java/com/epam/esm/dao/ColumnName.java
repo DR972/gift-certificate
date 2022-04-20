@@ -18,6 +18,10 @@ public final class ColumnName {
     public static final String GIFT_CERTIFICATE_ID = "gift_certificate_id";
     public static final String TAG_ID = "tag_id";
 
+    /**
+     * Private constructor without parameters.
+     * Restrict instantiation of the class.
+     */
     private ColumnName() {
     }
 }

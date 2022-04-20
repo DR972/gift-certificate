@@ -16,18 +16,19 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 /**
- * Class {@code DataBaseConfig} contains the spring database configuration.
+ * Class {@code DataBaseConfiguration} contains the spring database configuration for DAO layer.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
  */
 @Configuration
 @PropertySource("classpath:database/database.properties")
-public class DataBaseConfig {
+public class DataBaseConfiguration {
+    /**
+     * Database schema.
+     */
     @Value("classpath:database/schema.sql")
     Resource dbSchema;
-    @Value("classpath:database/create.sql")
-    Resource dbCreate;
 
     /**
      * This method creates a component that will be used as a data source.

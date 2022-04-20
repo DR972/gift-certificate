@@ -35,8 +35,16 @@ import java.util.List;
 public class CertificateController {
     private static final String ROWS = "rows";
     private static final String PAGE_NUMBER = "pageNumber";
+    /**
+     * GiftCertificateService certificateService.
+     */
     private final GiftCertificateService certificateService;
 
+    /**
+     * The constructor creates a CertificateController object
+     *
+     * @param certificateService GiftCertificateService certificateService
+     */
     @Autowired
     public CertificateController(GiftCertificateService certificateService) {
         this.certificateService = certificateService;

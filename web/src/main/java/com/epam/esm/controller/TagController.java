@@ -30,8 +30,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/tags")
 public class TagController {
+    /**
+     * TagService tagService.
+     */
     private final TagService tagService;
 
+    /**
+     * The constructor creates a TagController object
+     *
+     * @param tagService TagService tagService
+     */
     @Autowired
     public TagController(TagService tagService) {
         this.tagService = tagService;

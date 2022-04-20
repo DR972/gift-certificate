@@ -25,8 +25,16 @@ import java.util.Optional;
  */
 @Repository
 public abstract class AbstractDao<T extends Entity<ID>, ID> implements Dao<T, ID> {
+    /**
+     * JdbcTemplate jdbcTemplate.
+     */
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * The constructor creates an AbstractDAO object
+     *
+     * @param jdbcTemplate JdbcTemplate
+     */
     @Autowired
     public AbstractDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

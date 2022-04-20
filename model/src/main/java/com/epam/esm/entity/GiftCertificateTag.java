@@ -14,6 +14,12 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 public class GiftCertificateTag extends Entity<Long> {
+    /**
+     * GiftCertificateTag certificateId.
+     */
     private long certificateId;
+    /**
+     * GiftCertificateTag tagId.
+     */
     private long tagId;
 }

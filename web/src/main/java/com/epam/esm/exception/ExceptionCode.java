@@ -24,6 +24,12 @@ public enum ExceptionCode {
     INTERNAL_SERVER_ERROR_EXCEPTION(500, 50001),
     DATABASE_ERROR(500, 50002);
 
+    /**
+     * request status.
+     */
     private int status;
+    /**
+     * error code.
+     */
     private int errorCode;
 }

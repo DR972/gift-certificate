@@ -31,10 +31,26 @@ import static com.epam.esm.util.SqlQuery.DELETE_TAG;
  */
 @Service
 public class TagServiceImpl implements TagService {
+    /**
+     * TagDao tagDao.
+     */
     private final TagDao tagDao;
+    /**
+     * GiftCertificateTagDao certificateTagDao.
+     */
     private final GiftCertificateTagDao certificateTagDao;
+    /**
+     * TagDtoConverter tagDtoConverter.
+     */
     private final TagDtoConverter tagDtoConverter;
 
+    /**
+     * The constructor creates a TagServiceImpl object
+     *
+     * @param tagDao            TagDao tagDao
+     * @param certificateTagDao GiftCertificateTagDao certificateTagDao
+     * @param tagDtoConverter   TagDtoConverter tagDtoConverter
+     */
     @Autowired
     public TagServiceImpl(TagDao tagDao, GiftCertificateTagDao certificateTagDao, TagDtoConverter tagDtoConverter) {
         this.tagDao = tagDao;

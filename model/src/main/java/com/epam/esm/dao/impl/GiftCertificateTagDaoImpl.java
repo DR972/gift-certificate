@@ -21,6 +21,11 @@ import static com.epam.esm.dao.ColumnName.TAG_ID;
 @Repository
 public class GiftCertificateTagDaoImpl extends AbstractDao<GiftCertificateTag, Long> implements GiftCertificateTagDao {
 
+    /**
+     * The constructor creates an GiftCertificateTagDaoImpl object
+     *
+     * @param jdbcTemplate JdbcTemplate
+     */
     public GiftCertificateTagDaoImpl(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
     }

@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 /**
- * Class {@code SpringConfig} contains spring configuration.
+ * Class {@code WebConfig} contains spring configuration for web layer.
  *
  * @author Dzmitry Rozmysl
  * @version 1.0
@@ -20,7 +20,7 @@ import java.util.Locale;
 @Configuration
 @ComponentScan("com.epam.esm")
 @EnableWebMvc
-public class SpringConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
 
     /**
      * This method creates a bean that will be used to get LocaleResolver.
@@ -29,7 +29,6 @@ public class SpringConfig implements WebMvcConfigurer {
      */
     @Bean
     public LocaleResolver localeResolver() {
-        System.out.println("LocaleResolver");
         final AcceptHeaderLocaleResolver resolver = new AcceptHeaderLocaleResolver();
         resolver.setSupportedLocales(Arrays.asList(new Locale("ru"), new Locale("en")));
         resolver.setDefaultLocale(Locale.ENGLISH);
@@ -43,7 +42,6 @@ public class SpringConfig implements WebMvcConfigurer {
      */
     @Bean
     public ResourceBundleMessageSource messageSource() {
-        System.out.println("ResourceBundleMessageSource");
         ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
         resourceBundleMessageSource.setBasename("localization/message");
         resourceBundleMessageSource.setDefaultEncoding("UTF-8");

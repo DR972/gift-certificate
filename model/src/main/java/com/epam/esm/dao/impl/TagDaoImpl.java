@@ -20,6 +20,11 @@ import static com.epam.esm.dao.ColumnName.NAME;
 @Repository
 public class TagDaoImpl extends AbstractDao<Tag, Long> implements TagDao {
 
+    /**
+     * The constructor creates an TagDaoImpl object
+     *
+     * @param jdbcTemplate JdbcTemplate
+     */
     public TagDaoImpl(JdbcTemplate jdbcTemplate) {
         super(jdbcTemplate);
     }

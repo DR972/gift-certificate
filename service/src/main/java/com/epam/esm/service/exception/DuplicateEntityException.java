@@ -13,8 +13,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class DuplicateEntityException extends RuntimeException {
+    /**
+     * parameters that caused the DuplicateEntityException exception.
+     */
     private String param;
 
+    /**
+     * The constructor creates a DuplicateEntityException object
+     *
+     * @param message String message
+     * @param param   String param
+     */
     public DuplicateEntityException(String message, String param) {
         super(message);
         this.param = param;
