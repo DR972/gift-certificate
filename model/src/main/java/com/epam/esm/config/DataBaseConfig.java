@@ -30,7 +30,7 @@ public class DataBaseConfig {
     Resource dbCreate;
 
     /**
-     * The {@link DataSource} method creates a component that will be used as a data source.
+     * This method creates a component that will be used as a data source.
      *
      * @return the ComboPooledDataSource
      */
@@ -62,7 +62,7 @@ public class DataBaseConfig {
     }
 
     /**
-     * The {@link DataSourceInitializer} method creates a component that will be used to initialize the database.
+     * This method creates a component that will be used to initialize the database.
      *
      * @param dataSource the data source
      * @return DataSourceInitializer
@@ -82,7 +82,7 @@ public class DataBaseConfig {
     }
 
     /**
-     * The {@link JdbcTemplate} method creates a component that will be used for queries to database.
+     * This method creates a component that will be used for queries to database.
      *
      * @param dataSource the data source
      * @return the jdbc template
@@ -93,7 +93,7 @@ public class DataBaseConfig {
     }
 
     /**
-     * The {@link PlatformTransactionManager} method creates a component that will be used to perform transactions while the database is running.
+     * This method creates a component that will be used to perform transactions while the database is running.
      *
      * @param dataSource the data source
      * @return PlatformTransactionManager

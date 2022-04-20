@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 public class DatabaseTestConfiguration {
 
     /**
-     * The {@link DataSource} method creates a component that will be used as a data source.
+     * This method creates a component that will be used as a data source.
      *
      * @return the ComboPooledDataSource
      */

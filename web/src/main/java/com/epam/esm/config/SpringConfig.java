@@ -23,7 +23,7 @@ import java.util.Locale;
 public class SpringConfig implements WebMvcConfigurer {
 
     /**
-     * The {@link LocaleResolver} method creates a bean that will be used to get LocaleResolver.
+     * This method creates a bean that will be used to get LocaleResolver.
      *
      * @return the message source
      */
@@ -37,7 +37,7 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
     /**
-     * The {@link ResourceBundleMessageSource} method creates a bean that will be used to get info from properties files.
+     * This method creates a bean that will be used to get info from properties files.
      *
      * @return the message source
      */
